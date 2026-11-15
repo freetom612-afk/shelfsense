@@ -161,7 +161,8 @@ tailwind.config = {
     const nav = document.createElement('nav');
     nav.id = 'ss-tabbar';
     nav.setAttribute('aria-label', 'ניווט ראשי');
-    nav.innerHTML = TABS.map((t) => `<a href="${t.href}"${t.href === page ? ' aria-current="page"' : ''}>
+    const current = page === 'low-calorie-recipes.html' ? 'recipe.html' : page;
+    nav.innerHTML = TABS.map((t) => `<a href="${t.href}"${t.href === current ? ' aria-current="page"' : ''}>
         <span class="material-symbols-outlined" aria-hidden="true">${t.icon}</span><span>${t.label}</span>
         ${t.badge ? '<span class="ss-badge" data-ss="cart-lines"></span>' : ''}</a>`).join('');
     document.body.appendChild(nav);
