@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="he"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script src="assets/data.js"></script><script src="assets/state.js"></script><script src="assets/theme.js"></script></head><body class="bg-background font-body-md text-on-surface antialiased selection:bg-primary-fixed selection:text-on-primary-fixed"><header class="fixed top-0 w-full z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 md:h-20 w-full px-4 md:px-margin flex items-center justify-between gap-space-lg"><div class="flex items-center gap-space-md md:gap-space-xl min-w-0"><div class="flex items-center gap-space-md"><a href="index.html" class="flex shrink-0 items-center gap-space-sm md:gap-space-md cursor-pointer hover:opacity-90"><img alt="ShelfSense Logo" class="h-8 w-auto object-contain" src="assets/screen1.png"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-primary tracking-tight leading-none">ShelfSense</span><span class="hidden sm:inline font-label-sm text-label-sm text-on-surface-variant font-medium mt-space-xs">תזונה מדויקת • סל חכם</span></div></a></div><nav class="hidden md:flex items-center gap-space-xs overflow-x-auto whitespace-nowrap min-w-0" data-active-classes="bg-primary-container text-on-primary font-headline-sm rounded-lg shadow-sm"><a aria-current="page" class="px-space-md py-space-sm transition-all bg-primary-container text-on-primary font-headline-sm rounded-lg shadow-sm" data-path="dashboard" href="dashboard.html">תכנון שבועי</a><a class="px-space-md py-space-sm rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all inline-flex items-center gap-space-xs" data-path="cart" href="cart.html"><span>סל קניות חכם ומזווה</span><span class="px-space-xs py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm" data-ss="cart-lines">14</span></a><a class="px-space-md py-space-sm rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="recipes" href="recipe.html">ספר מתכונים</a><a class="px-space-md py-space-sm rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="onboarding" href="onboarding.html">שאלון התאמה</a></nav></div><div class="hidden md:flex items-center gap-space-md"><div class="hidden xl:flex items-center gap-space-sm"><div class="flex items-center gap-space-xs bg-surface-container-low px-space-md py-space-xs rounded-full"><span class="w-2 h-2 rounded-full bg-tertiary"></span><span class="font-label-sm text-label-sm text-on-surface font-medium" data-ss="header-targets">חיטוב: 2,150 קל׳ | 165ג חלבון</span></div><div class="flex items-center gap-space-xs bg-surface-container-low px-space-md py-space-xs rounded-full"><span class="w-2 h-2 rounded-full bg-secondary"></span><span class="font-label-sm text-label-sm text-on-surface font-medium" data-ss="header-budget">תקציב שבועי: ₪385 / ₪380</span></div></div><div class="flex items-center gap-space-xs bg-surface-container-lowest px-space-md py-space-xs rounded-lg shadow-[0_1px_4px_rgba(0,0,0,0.03)] cursor-pointer hover:bg-surface-container-low transition-colors"><span class="font-label-sm text-label-sm text-on-surface-variant">רשת פעילה:</span><span class="font-label-md text-label-md text-primary font-bold">רמי לוי אונליין</span><span class="material-symbols-outlined text-outline text-[16px]">expand_more</span></div><div class="flex items-center gap-space-sm pl-space-xs"><div class="flex flex-col text-left"><span class="font-label-md text-label-md text-on-surface font-semibold">איתי ברקוביץ׳</span><span class="font-label-sm text-label-sm text-primary-container font-medium" data-ss="tier-en">מאוזן (Standard)</span></div><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-2 ring-primary-fixed" src="assets/img/avatar.jpg"/></div></div></div></header><main class="w-full pt-16 md:pt-20 bg-background min-h-screen"><div class="flex flex-col w-full">
+<!-- Interactive Notification Modal / Drawer (Hidden by default, triggered via JS) -->
+<div class="fixed inset-0 z-[60] flex items-end md:items-center justify-center p-0 md:p-space-md bg-inverse-surface/40 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300" id="swap-modal" role="dialog" aria-modal="true" aria-label="החלפת מנה">
+<div class="bg-surface-container-lowest max-w-lg w-full max-h-[85vh] md:max-h-[90vh] overflow-y-auto rounded-t-2xl md:rounded-xl p-space-md md:p-space-lg shadow-xl transform scale-95 transition-transform duration-300 relative">
+<div class="md:hidden mx-auto mb-space-sm h-1.5 w-10 rounded-full bg-surface-container-high" aria-hidden="true"></div>
+<div class="flex items-start justify-between gap-space-md mb-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-full bg-primary-container/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[24px]">swap_horiz</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">החלפת מנה חכמה</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant" id="swap-target">מנות חלופיות מאותו פרופיל תקציב</p>
+</div>
+</div>
+<button class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors" onclick="toggleSwapModal()">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<div class="p-space-md rounded-lg bg-surface-container-low mb-space-md">
+<div class="flex items-center gap-space-xs text-primary mb-space-xs">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+<span class="font-label-md text-label-md font-semibold">אחריות דיוק תזונתי ShelfSense</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+          כל המנות החלופיות שומרות על סטייה מרבית של עד 5% בקלוריות ו-10% בחלבון, מאותו פרופיל תקציב וללא הרכיבים שסימנת כשנואים. רכיבי הסל יתעדכנו בהתאם למנה החדשה.
+        </p>
+</div>
+<div class="space-y-space-sm mb-space-lg" id="swap-options" style="font-variant-numeric: tabular-nums;"></div>
+<div class="flex justify-end gap-space-sm">
+<button class="px-space-lg py-space-sm rounded-lg bg-surface-container-high text-on-surface font-label-md text-label-md hover:bg-surface-container-highest transition-colors" onclick="toggleSwapModal()">ביטול</button>
+</div>
+</div>
+</div>
+<div class="w-full px-4 md:px-margin py-space-md md:py-space-lg flex flex-col gap-space-lg md:gap-space-xl">
+<!-- Zone 1: Master KPI Summary Header Banner -->
+<section class="w-full md:bg-surface-container-lowest md:rounded-xl md:p-space-lg md:shadow-sm md:border md:border-outline-variant flex flex-col gap-space-md md:gap-space-lg">
+<div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-space-md">
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="px-space-sm py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm">שבוע 18 • מאי</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">סנכרון תזונה ומזווה פעיל</span>
+</div>
+<h1 class="font-headline-md text-headline-md md:font-headline-lg md:text-headline-lg text-on-surface tracking-tight mt-space-xs">
+            תכנון שבועי: שיטת ה-Lego Meal Prep
+          </h1>
+</div>
+<div class="flex items-center flex-wrap gap-space-sm">
+<div class="flex items-center gap-space-xs bg-surface-container-low px-space-md py-space-xs rounded-lg">
+<span class="material-symbols-outlined text-primary text-[18px]">verified_user</span>
+<span class="font-label-md text-label-md text-on-surface">פרופיל פעיל: <strong class="font-semibold text-primary" data-ss="profile">חיטוב מאוזן</strong></span>
+</div>
+<div class="flex items-center gap-space-xs bg-surface-container-low px-space-md py-space-xs rounded-lg">
+<span class="material-symbols-outlined text-secondary text-[18px]">store</span>
+<span class="font-label-md text-label-md text-on-surface">רשת נבחרת: <strong class="font-semibold text-secondary" data-ss="store">רמי לוי</strong></span>
+</div>
+</div>
+</div>
+<!-- KPI Metrics Triad Bento -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md">
+<!-- Metric 1: Macro & Caloric Engine -->
+<div class="bg-surface-container-lowest md:bg-surface-container-low border border-outline-variant md:border-transparent p-space-md rounded-xl flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant">יעד קלורי יומי ממוצע</span>
+<span class="material-symbols-outlined text-primary text-[20px]">nutrition</span>
+</div>
+<div class="flex items-baseline gap-space-xs mt-space-xs">
+<span class="font-display-lg text-display-lg text-on-surface leading-none" style="font-variant-numeric: tabular-nums;" data-ss="calories">2,150</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">קק"ל / יום</span>
+</div>
+</div>
+<!-- Macro distribution split bars -->
+<div class="space-y-space-xs mt-space-md">
+<div>
+<div class="flex justify-between font-label-sm text-label-sm mb-1">
+<span class="text-macro-protein font-semibold">חלבון: <span data-ss="protein">165</span>ג ליום</span>
+<span class="font-medium text-macro-protein">100%</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-macro-protein rounded-full" style="width: 100%;"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-label-sm text-label-sm mb-1">
+<span class="text-secondary font-medium">פחמימות מורכבות: <span data-ss="carbs">190</span>ג</span>
+<span class="font-medium text-on-surface-variant">92%</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-macro-carbs rounded-full" style="width: 92%;"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-label-sm text-label-sm mb-1">
+<span class="text-macro-fat font-medium">שומנים בריאים: <span data-ss="fat">62</span>ג</span>
+<span class="font-medium text-macro-fat">96%</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-macro-fat rounded-full" style="width: 96%;"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Metric 2: Financial Smart Basket Tracker -->
+<div class="bg-surface-container-lowest md:bg-surface-container-low border border-outline-variant md:border-transparent p-space-md rounded-xl flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant">מעקב תקציב שבועי לסופר</span>
+<span class="px-space-xs py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm">חיסכון מול רשת שנייה: <span data-ss="cart-savings">₪0</span></span>
+</div>
+<div class="flex items-baseline gap-space-xs mt-space-xs">
+<span class="font-display-lg text-display-lg text-tertiary leading-none" style="font-variant-numeric: tabular-nums;" data-ss="cart-total-round">₪385</span>
+<span class="font-label-md text-label-md text-on-surface-variant">/ מסגרת <span data-ss="budget">₪380</span> (<span data-ss="tier">מאוזן</span>)</span>
+</div>
+</div>
+<div class="mt-space-md flex flex-col gap-space-xs">
+<div class="flex items-center justify-between font-label-sm text-label-sm text-on-surface-variant">
+<span>ניצול תקציב בפועל</span>
+<span class="font-semibold text-on-surface" data-ss="budget-usage">101.4%</span>
+</div>
+<div class="w-full h-3 rounded-full bg-surface-container-highest overflow-hidden p-0.5 flex">
+<div class="h-full bg-tertiary-container rounded-full" data-ss-width="budget-usage" style="width: 100%;"></div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+              <span data-ss="budget-status"></span>
+            </p>
+</div>
+</div>
+<!-- Metric 3: Time Investment & Prep Efficiency -->
+<div class="bg-surface-container-lowest md:bg-surface-container-low border border-outline-variant md:border-transparent p-space-md rounded-xl flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant">זמן בישול והשקעה שבועית</span>
+<span class="material-symbols-outlined text-secondary text-[20px]">timelapse</span>
+</div>
+<div class="flex items-baseline gap-space-xs mt-space-xs">
+<span class="font-display-lg text-display-lg text-on-surface leading-none" id="kpi-prep-hours" style="font-variant-numeric: tabular-nums;">1.7</span>
+<span class="font-label-md text-label-md text-on-surface-variant">שעות בישול: ראשון + שלישי</span>
+</div>
+</div>
+<div class="mt-space-md p-space-sm bg-surface-container-lowest rounded-lg flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-full bg-tertiary/10 text-tertiary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">bolt</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold" id="kpi-quick-avg">10 דקות בממוצע לארוחה מהירה</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">חימום, הרכבה מהירה ואפס בזבוז זמן</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Zone 2: Main Workspace Grid (8 cols Plan + 4 cols Shopping Dock) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- Core Meal Plan Matrix (8 Columns) -->
+<div class="lg:col-span-8 flex flex-col gap-space-xl">
+<!-- Category A: 2 Batch Cooking Anchor Meals -->
+<div class="hidden rounded-xl bg-error-container text-on-error-container p-space-md font-body-md text-body-md" id="menu-warning"></div>
+<section class="flex flex-col gap-space-md">
+<div class="flex items-center justify-between gap-space-sm flex-wrap">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded-lg bg-primary-container text-on-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">inventory_2</span>
+</div>
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface leading-none">ארוחות עוגן שבועיות (Batch Cooking)</h2>
+<span class="font-body-sm text-body-sm text-on-surface-variant">עוגן 1 מבושל ביום ראשון, עוגן 2 ביום שלישי — כל בישול מספיק ל-3 ימים</span>
+</div>
+</div>
+<span class="px-space-md py-space-xs rounded-full bg-surface-container font-label-sm text-label-sm text-primary font-semibold">2 עוגנים • 6 מנות</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md" id="slots-anchor"></div>
+</section>
+<!-- Category B: Quick Meals (10-15 min assembly) -->
+<section class="flex flex-col gap-space-md">
+<div class="flex items-center justify-between gap-space-sm flex-wrap">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded-lg bg-secondary-container text-on-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">timer</span>
+</div>
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface leading-none">ארוחות מהירות (10–15 דקות)</h2>
+<span class="font-body-sm text-body-sm text-on-surface-variant">הרכבה יומיומית בלי בישול מורכב — ערב ובוקר</span>
+</div>
+</div>
+<span class="px-space-md py-space-xs rounded-full bg-surface-container font-label-sm text-label-sm text-secondary font-semibold">13 מנות</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-space-md" id="slots-quick"></div>
+</section>
+<!-- Category C: Backup Pantry Meal -->
+<section class="flex flex-col gap-space-md">
+<div class="p-space-lg rounded-xl bg-gradient-to-r from-surface-container-high via-surface-container to-surface-container-low shadow-sm flex items-center gap-space-md">
+<div class="w-14 h-14 rounded-xl bg-tertiary-container text-on-tertiary flex items-center justify-center shrink-0 shadow-sm">
+<span class="material-symbols-outlined text-[32px]">shield</span>
+</div>
+<div>
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="font-headline-md text-headline-md text-on-surface">ארוחת גיבוי מהמזווה</span>
+<span class="px-space-xs py-0.5 rounded-full bg-tertiary text-on-tertiary font-label-sm text-label-sm">100% מוצרים עמידים</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1 max-w-xl">לערב שבו חוזרים עייפים ואין כוח לבשל — רק מוצרי מזווה וקפואים, כך ששום מוצר טרי לא נרקב במקרר.</p>
+</div>
+</div>
+<div id="slots-backup"></div>
+</section>
+</div>
+<!-- Supermarket Cart Dock & Live Optimizer (4 Columns) -->
+<div class="lg:col-span-4 flex flex-col gap-space-lg sticky top-24">
+<!-- Smart Cart Card (rendered from the weekly menu by assets/data.js) -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-md flex flex-col gap-space-md" id="dash-cart" style="font-variant-numeric: tabular-nums;">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[24px]">shopping_cart_checkout</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">סל קניות שבועי</h2>
+</div>
+<span class="px-space-sm py-1 rounded-full bg-surface-container font-label-sm text-label-sm text-on-surface font-semibold"><span data-ss="cart-lines">0</span> מוצרים</span>
+</div>
+<div class="bg-surface-container-low p-space-md rounded-lg space-y-1.5" id="dash-chains"></div>
+<div class="space-y-space-xs">
+<div class="flex justify-between items-center text-on-surface-variant font-label-sm text-label-sm px-space-xs">
+<span>מרכיבים טריים מרכזיים:</span>
+<a class="text-primary hover:underline" href="cart.html">לכל הסל</a>
+</div>
+<div class="space-y-1" id="dash-cart-items"></div>
+</div>
+<div class="pt-space-sm space-y-space-md">
+<div class="flex items-baseline justify-between">
+<span class="font-headline-sm text-headline-sm text-on-surface">סה"כ משוער:</span>
+<span class="font-display-lg text-display-lg text-primary leading-none" data-ss="cart-total">₪0</span>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant" data-ss="budget-status"></p>
+<a class="w-full h-12 rounded-lg bg-primary text-on-primary font-headline-sm text-headline-sm flex items-center justify-center gap-space-sm shadow-md hover:bg-surface-tint active:scale-95 transition-all" href="cart.html">
+<span>מעבר לסל וייצוא לסופר</span>
+<span class="material-symbols-outlined text-[20px] rtl:rotate-180">arrow_forward</span>
+</a>
+<div class="flex items-center justify-center gap-space-xs text-on-surface-variant font-label-sm text-label-sm text-center">
+<span class="material-symbols-outlined text-tertiary text-[16px]">lock</span>
+<span>ייצוא ישיר של העגלה — התשלום מתבצע באתר הרשת</span>
+</div>
+</div>
+</div>
+<!-- Meal Prep Schedule Helper Pill -->
+<div class="bg-surface-container p-space-md rounded-xl flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-full bg-secondary-container/20 text-secondary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[22px]">calendar_clock</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">תזכורת עוגן ראשון ב-18:00</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">שלח רשימת ציוד וטיימר מודרך לסמארטפון</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+  // ---- Weekly menu (Lego method) rendered from assets/data.js ----
+  const D = window.ShelfSenseData;
+  const SS = window.ShelfSense;
+  let MENU = {};
+
+  const esc = (s) => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+  function media(d) {
+    return d.img
+      ? `<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="${esc(d.name)}" src="${d.img}">`
+      : `<div class="w-full h-full flex items-center justify-center bg-primary/10 text-primary"><span class="material-symbols-outlined text-[44px]">${d.icon}</span></div>`;
+  }
+  function pills(d) {
+    return `<div class="flex items-center flex-wrap gap-space-xs" style="font-variant-numeric: tabular-nums;">
+      <span class="px-space-sm py-1 rounded-full bg-surface-container font-label-sm text-label-sm text-on-surface font-semibold">${d.kcal} קק"ל</span>
+      <span class="px-space-sm py-1 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm font-semibold">${d.protein}ג חלבון</span>
+      <span class="px-space-sm py-1 rounded-full bg-macro-carbs-bg text-macro-carbs font-label-sm text-label-sm">${d.carbs}ג פחמימה</span>
+      <span class="px-space-sm py-1 rounded-full bg-macro-fat-bg text-macro-fat border border-outline-variant font-label-sm text-label-sm">${d.fat}ג שומן</span>
+    </div>`;
+  }
+  function actions(slot, id) {
+    return `<div class="flex items-center gap-space-sm bg-surface-container-low p-space-sm rounded-lg">
+      <button type="button" class="flex-1 py-space-xs px-space-sm rounded-lg bg-surface-container-lowest text-on-surface font-label-md text-label-md hover:bg-surface-container-high transition-colors flex items-center justify-center gap-1 shadow-sm" onclick="openSwapModal('${slot}')">
+        <span class="material-symbols-outlined text-[16px]">swap_horiz</span><span>החלף מנה</span></button>
+      <a class="flex-1 py-space-xs px-space-sm rounded-lg bg-primary-container text-on-primary font-label-md text-label-md hover:bg-primary transition-colors flex items-center justify-center gap-1" href="recipe.html?dish=${id}&slot=${slot}">
+        <span class="material-symbols-outlined text-[16px]">menu_book</span><span>צפייה במתכון</span></a>
+    </div>`;
+  }
+  function emptyCard(slot) {
+    const s = D.SLOTS[slot];
+    return `<div class="rounded-xl p-space-md bg-error-container/40 text-on-surface font-body-md text-body-md" data-slot="${slot}">
+      <strong>${s.label}:</strong> אין מנה במאגר שמתאימה לפרופיל התקציב, להגבלות ולרכיבים שסימנת. אפשר לעדכן העדפות ב<a class="underline" href="onboarding.html">שאלון ההתאמה</a>.</div>`;
+  }
+
+  function anchorCard(slot, id) {
+    const s = D.SLOTS[slot], d = D.DISHES[id];
+    return `<article class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between gap-space-md group" data-slot="${slot}">
+      <div>
+        <div class="relative w-full h-44 rounded-lg overflow-hidden mb-space-md bg-surface-container-high">${media(d)}
+          <div class="absolute top-2 right-2 bg-surface-container-lowest/90 backdrop-blur-md px-space-sm py-1 rounded-full flex items-center gap-space-xs">
+            <span class="w-2 h-2 rounded-full bg-primary"></span><span class="font-label-sm text-label-sm text-on-surface font-semibold">${s.label} • ${s.servings} מנות</span></div>
+          <div class="absolute bottom-2 right-2 bg-inverse-surface/80 text-inverse-on-surface px-space-sm py-0.5 rounded-full font-label-sm text-label-sm">בישול ב${s.cookDay} • ${s.days}</div>
+        </div>
+        <h3 class="font-headline-sm text-headline-sm text-on-surface" data-slot-field="${slot}:name">${esc(d.name)}</h3>
+        <p class="font-body-sm text-body-sm text-on-surface-variant mt-1 line-clamp-2">${esc(d.desc)}</p>
+        <div class="mt-space-md">${pills(d)}</div>
+        <p class="font-label-sm text-label-sm text-on-surface-variant mt-space-sm">⏱ ${d.prep} דק׳ בישול לכל 3 המנות</p>
+      </div>
+      ${actions(slot, id)}
+    </article>`;
+  }
+
+  function quickCard(slot, id) {
+    const s = D.SLOTS[slot], d = D.DISHES[id];
+    return `<article class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm hover:shadow-md transition-shadow flex flex-col gap-space-sm group" data-slot="${slot}">
+      <div class="flex gap-space-md items-center">
+        <div class="relative w-20 h-20 rounded-lg overflow-hidden shrink-0 bg-surface-container-high">${media(d)}
+          <div class="absolute bottom-1 right-1 bg-inverse-surface/80 text-inverse-on-surface px-1.5 py-0.5 rounded text-[10px] font-semibold">${d.prep} דק׳</div></div>
+        <div class="flex flex-col min-w-0">
+          <span class="font-label-sm text-label-sm text-secondary font-semibold">${s.label} • ${s.days} • ${s.servings}×</span>
+          <h3 class="font-headline-sm text-headline-sm text-on-surface" data-slot-field="${slot}:name">${esc(d.name)}</h3>
+        </div>
+      </div>
+      ${pills(d)}
+      ${actions(slot, id)}
+    </article>`;
+  }
+
+  function backupCard(slot, id) {
+    const s = D.SLOTS[slot], d = D.DISHES[id];
+    const allPantry = d.ing.every(([pid]) => D.PRODUCTS[pid].cat === 'pantry');
+    return `<article class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col md:flex-row md:items-center gap-space-lg group" data-slot="${slot}">
+      <div class="w-full md:w-48 h-32 rounded-lg overflow-hidden shrink-0 bg-surface-container-high">${media(d)}</div>
+      <div class="flex-1 flex flex-col gap-space-sm min-w-0">
+        <div class="flex items-center justify-between gap-space-sm flex-wrap">
+          <h3 class="font-headline-sm text-headline-sm text-on-surface" data-slot-field="${slot}:name">${esc(d.name)}</h3>
+          <span class="px-space-sm py-0.5 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm font-semibold">${d.prep} דק׳ הכנה</span>
+        </div>
+        <p class="font-body-sm text-body-sm text-on-surface-variant">${esc(d.desc)}</p>
+        <div class="flex items-center justify-between flex-wrap gap-space-sm">${pills(d)}
+          <span class="flex items-center gap-space-xs ${allPantry ? 'text-tertiary' : 'text-secondary'} font-label-md text-label-md font-semibold">
+            <span class="material-symbols-outlined text-[18px]">${allPantry ? 'check_circle' : 'info'}</span>${allPantry ? 'כל הרכיבים ממוצרי מזווה' : 'כולל רכיב טרי'}</span>
+        </div>
+        ${actions(slot, id)}
+      </div>
+    </article>`;
+  }
+
+  function renderMenu() {
+    const profile = SS.loadProfile();
+    MENU = D.buildMenu(profile, SS.loadMenu());
+    const put = (containerId, slots, card) => {
+      const el = document.getElementById(containerId);
+      if (el) el.innerHTML = slots.map(slot => MENU[slot] ? card(slot, MENU[slot]) : emptyCard(slot)).join('');
+    };
+    put('slots-anchor', ['anchor1', 'anchor2'], anchorCard);
+    put('slots-quick', ['quick1', 'quick2', 'breakfast'], quickCard);
+    put('slots-backup', ['backup'], backupCard);
+
+    const missing = Object.keys(MENU).filter(s => !MENU[s]);
+    const warn = document.getElementById('menu-warning');
+    if (warn) {
+      warn.classList.toggle('hidden', !missing.length);
+      warn.textContent = missing.length ? `לא נמצאו מנות מתאימות ל-${missing.length} מקומות בתפריט לפי ההגבלות שבחרת. המאגר בגרסת ה-MVP מוגבל — נסה להסיר רכיב שנוא או הגבלה.` : '';
+    }
+
+    // Prep-time KPI: 2 batch sessions + average quick-meal time
+    const anchors = ['anchor1', 'anchor2'].filter(s => MENU[s]).map(s => D.DISHES[MENU[s]].prep);
+    const quick = ['quick1', 'quick2', 'breakfast'].filter(s => MENU[s]);
+    const quickAvg = quick.length ? Math.round(quick.reduce((a, s) => a + D.DISHES[MENU[s]].prep * D.SLOTS[s].servings, 0) / quick.reduce((a, s) => a + D.SLOTS[s].servings, 0)) : 0;
+    const hoursEl = document.getElementById('kpi-prep-hours');
+    const quickEl = document.getElementById('kpi-quick-avg');
+    if (hoursEl) hoursEl.textContent = (anchors.reduce((a, b) => a + b, 0) / 60).toLocaleString('he-IL', { maximumFractionDigits: 1 });
+    if (quickEl) quickEl.textContent = `${quickAvg} דקות בממוצע לארוחה מהירה`;
+
+    renderCartDock();
+    SS.apply();
+  }
+
+  function renderCartDock() {
+    const cart = SS.currentCart();
+    if (!cart) return;
+    const store = cart.store;
+    const chainsEl = document.getElementById('dash-chains');
+    if (chainsEl) {
+      const rows = Object.entries(cart.chains).sort((a, b) => a[1] - b[1]);
+      const cheapest = rows[0][1];
+      chainsEl.innerHTML = `<div class="flex items-center justify-between font-label-sm text-label-sm text-on-surface-variant"><span>השוואת רשתות לסל זה:</span><span>מחירי אב-טיפוס</span></div>` +
+        rows.map(([name, total]) => `<div class="flex items-center justify-between p-space-xs px-space-sm rounded-lg ${name === store ? 'bg-surface-container-lowest shadow-sm' : ''}">
+          <span class="font-label-md text-label-md ${name === store ? 'font-semibold text-on-surface' : 'text-on-surface-variant'}">${name} אונליין${total === cheapest ? ' <span class="px-1.5 rounded bg-tertiary-fixed text-on-tertiary-fixed text-[10px] font-bold">הכי זול</span>' : ''}</span>
+          <span class="font-label-md text-label-md ${total === cheapest ? 'text-tertiary font-bold' : 'text-on-surface-variant'}">${SS.money(total, 2)}${total !== cheapest ? ` (+${SS.money(total - cheapest, 2)})` : ''}</span></div>`).join('');
+    }
+    const itemsEl = document.getElementById('dash-cart-items');
+    if (itemsEl) {
+      const top = cart.fresh.filter(l => !l.removed).sort((a, b) => b.total - a.total).slice(0, 5);
+      itemsEl.innerHTML = top.map(l => `<div class="p-space-xs px-space-sm rounded-lg bg-surface-container flex items-center justify-between gap-space-sm">
+        <span class="font-body-sm text-body-sm text-on-surface font-medium min-w-0 truncate">${esc(l.product.name)} (${l.packs > 1 ? l.packs + ' × ' : ''}${l.product.packLabel})</span>
+        <span class="font-label-sm text-label-sm text-on-surface font-semibold shrink-0">${SS.money(l.total, 2)}</span></div>`).join('');
+    }
+  }
+
+  // ---- Whole-dish swap: same tier, ±5% kcal, ±10% protein, no dislikes, diet respected ----
+  const pct = (x) => (x >= 0 ? '+' : '−') + Math.abs(x * 100).toFixed(1) + '%';
+
+  function openSwapModal(slot) {
+    const list = document.getElementById('swap-options');
+    const target = document.getElementById('swap-target');
+    if (!list) return;
+    const profile = SS.loadProfile();
+    const tier = SS.TIERS[profile.tier] || SS.TIERS.balanced;
+    const s = D.SLOTS[slot];
+    const current = MENU[slot] && D.DISHES[MENU[slot]];
+    if (target) target.textContent = `${s.label} • פרופיל ${tier.label} • יעד ${s.target.kcal} קק"ל / ${s.target.protein}ג חלבון${current ? ' • במקום: ' + current.name : ''}`;
+
+    const options = D.swapOptions(slot, profile, MENU[slot]);
+    list.innerHTML = options.length ? '' : '<div class="p-space-md rounded-lg bg-surface-container font-body-sm text-body-sm text-on-surface-variant">אין כרגע מנה חלופית שעומדת בטווח ±5% קלוריות ו-±10% חלבון בפרופיל התקציב ובהעדפות שלך.</div>';
+    options.forEach(({ id, dish: d, kcalDiff, proteinDiff, costDiff }) => {
+      const row = document.createElement('div');
+      row.className = 'p-space-sm md:p-space-md rounded-xl border border-outline-variant bg-surface-container-lowest hover:border-primary transition-colors flex items-center justify-between gap-space-sm';
+      const c = Math.round(costDiff * 10) / 10;
+      const costText = Math.abs(c) < 0.5 ? 'ללא שינוי מהותי בסל' : `${c > 0 ? '+' : '−'}${SS.money(Math.abs(c))} לסל (משוער)`;
+      row.innerHTML = `
+        <div class="flex items-center gap-space-md min-w-0">
+          <div class="w-11 h-11 rounded-lg bg-primary-fixed flex items-center justify-center text-primary shrink-0"><span class="material-symbols-outlined">${d.icon}</span></div>
+          <div class="min-w-0">
+            <div class="font-label-lg text-label-lg text-on-surface">${esc(d.name)}</div>
+            <div class="flex items-center flex-wrap gap-1 mt-1 font-label-sm text-label-sm">
+              <span class="px-2 py-0.5 rounded-full bg-surface-container text-on-surface">${d.kcal} קק"ל <span dir="ltr">${pct(kcalDiff)}</span></span>
+              <span class="px-2 py-0.5 rounded-full bg-macro-protein-bg text-macro-protein">${d.protein}ג חלבון <span dir="ltr">${pct(proteinDiff)}</span></span>
+              <span class="px-2 py-0.5 rounded-full ${c <= 0 ? 'bg-tertiary-fixed text-tertiary' : 'bg-secondary-fixed text-on-secondary-container'}">${costText}</span>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="shrink-0 px-space-md py-space-xs rounded-lg bg-primary-container text-on-primary font-label-md text-label-md hover:bg-primary transition-all">בחר</button>`;
+      row.querySelector('button').addEventListener('click', () => chooseDish(slot, id));
+      list.appendChild(row);
+    });
+    setSwapModal(true);
+  }
+
+  function chooseDish(slot, id) {
+    const menu = SS.loadMenu();
+    menu[slot] = id;
+    SS.saveMenu(menu);
+    setSwapModal(false);
+    renderMenu();
+    showToast(`${D.SLOTS[slot].label} הוחלפה ל: ${D.DISHES[id].name} — הסל עודכן`);
+  }
+
+  function setSwapModal(open) {
+    const modal = document.getElementById('swap-modal');
+    if (!modal) return;
+    const inner = modal.firstElementChild;
+    modal.classList.toggle('opacity-0', !open);
+    modal.classList.toggle('pointer-events-none', !open);
+    modal.classList.toggle('opacity-100', open);
+    if (inner) inner.classList.toggle('scale-95', !open);
+  }
+  // Kept for the existing close/cancel buttons in the modal markup
+  function toggleSwapModal() {
+    const modal = document.getElementById('swap-modal');
+    setSwapModal(modal && modal.classList.contains('pointer-events-none'));
+  }
+
+  function showToast(text) {
+    let toast = document.getElementById('ss-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'ss-toast';
+      toast.setAttribute('role', 'status');
+      toast.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] bg-inverse-surface text-inverse-on-surface px-space-lg py-space-sm rounded-lg shadow-xl font-label-md text-label-md transition-opacity duration-300 opacity-0';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = text;
+    toast.classList.remove('opacity-0');
+    clearTimeout(toast._t);
+    toast._t = setTimeout(() => toast.classList.add('opacity-0'), 2800);
+  }
+</script></main><footer class="w-full bg-surface-container-lowest py-space-lg shadow-[0_-1px_6px_rgba(0,0,0,0.02)]"><div class="w-full px-4 md:px-margin flex flex-col md:flex-row items-center justify-between gap-space-md text-on-surface-variant font-label-md text-label-md"><div class="flex items-center gap-space-sm"><span>© 2025 ShelfSense Israel. כל הזכויות שמורות.</span><span class="text-outline-variant">•</span><span>טכנולוגיית סנכרון מחירים בזמן אמת</span></div><div class="flex items-center gap-space-lg"><a class="hover:text-primary transition-colors" href="#">שקיפות נתונים ופרטיות</a><a class="hover:text-primary transition-colors" href="#">רשתות קמעונאיות נתמכות</a><a class="hover:text-primary transition-colors" href="#">תמיכה ומענה לקוחות</a></div></div></footer><script>
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('[data-path="dashboard"]').forEach(el => el.href = 'dashboard.html');
+    document.querySelectorAll('[data-path="cart"]').forEach(el => el.href = 'cart.html');
+    document.querySelectorAll('[data-path="recipes"]').forEach(el => el.href = 'recipe.html');
+    document.querySelectorAll('[data-path="onboarding"]').forEach(el => el.href = 'onboarding.html');
+
+    // Close the swap modal on backdrop click / Escape
+    const modal = document.getElementById('swap-modal');
+    if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) setSwapModal(false); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setSwapModal(false); });
+
+    renderMenu();
+});
+</script></body></html>
+

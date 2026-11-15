@@ -1,0 +1,1657 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShelfSense | תזונה מדויקת • סל חכם • שיטת הלגו</title>
+    <!-- Google Font: Rubik (כמו שהוגדר ב-DESIGN.md) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Palette לפי ה-DESIGN.md של ShelfSense */
+            --primary: #0F766E;
+            --primary-hover: #115E59;
+            --primary-light: #CCFBF1;
+            --primary-fixed: #9CF2E8;
+            --secondary: #D97706;
+            --secondary-light: #FEF3C7;
+            --tertiary: #059669;
+            --tertiary-light: #ECFDF5;
+            --neutral-dark: #0F172A;
+            --neutral-slate: #1E293B;
+            --neutral-muted: #64748B;
+            --bg-canvas: #F8FAFC;
+            --surface-card: #FFFFFF;
+            --border-subtle: #E2E8F0;
+            --border-active: #CBD5E1;
+            
+            /* Macro Palette */
+            --macro-protein: #047857;
+            --macro-protein-bg: #ECFDF5;
+            --macro-carbs: #D97706;
+            --macro-carbs-bg: #FFFBEB;
+            --macro-fat: #B45309;
+            --macro-fat-bg: #F8FAFC;
+
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --radius-full: 9999px;
+            --shadow-card: 0px 1px 3px rgba(15, 23, 42, 0.04), 0px 4px 12px -2px rgba(15, 23, 42, 0.05);
+            --shadow-hover: 0px 10px 25px -4px rgba(15, 23, 42, 0.08), 0px 4px 10px -1px rgba(15, 23, 42, 0.04);
+            --shadow-glow: 0px 14px 30px -4px rgba(15, 118, 110, 0.25);
+        }
+
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rubik', sans-serif;
+            background-color: var(--bg-canvas);
+            color: var(--neutral-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            font-variant-numeric: tabular-nums;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ===== HEADER & NAVBAR ===== */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-subtle);
+            transition: all 0.3s ease;
+        }
+
+        .nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 76px;
+        }
+
+        .logo-wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 1.45rem;
+            color: var(--primary);
+        }
+
+        .logo-img {
+            width: 42px;
+            height: 42px;
+            object-fit: contain;
+            border-radius: var(--radius-sm);
+        }
+
+        .logo-badge {
+            font-size: 0.72rem;
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 2px 8px;
+            border-radius: var(--radius-full);
+            font-weight: 600;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: var(--neutral-slate);
+            transition: color 0.2s;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 22px;
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(15, 118, 110, 0.3);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .btn-secondary {
+            background-color: #fff;
+            color: var(--neutral-dark);
+            border: 1px solid var(--border-active);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--bg-canvas);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            padding: 70px 0 60px;
+            position: relative;
+            background: radial-gradient(circle at 100% 0%, rgba(204, 251, 241, 0.45) 0%, transparent 50%),
+                        radial-gradient(circle at 0% 100%, rgba(254, 243, 199, 0.3) 0%, transparent 40%);
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 48px;
+            align-items: center;
+        }
+
+        .hero-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            background: #FFFFFF;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-full);
+            font-size: 0.85rem;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .hero-pill span.dot {
+            width: 8px;
+            height: 8px;
+            background: var(--tertiary);
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 0 3px var(--tertiary-light);
+        }
+
+        .hero-title {
+            font-size: 3.2rem;
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            margin-bottom: 20px;
+            color: var(--neutral-dark);
+        }
+
+        .hero-title .highlight {
+            color: var(--primary);
+            position: relative;
+        }
+
+        .hero-title .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: var(--primary-light);
+            z-index: -1;
+            border-radius: 4px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.15rem;
+            color: var(--neutral-muted);
+            margin-bottom: 32px;
+            max-width: 580px;
+            line-height: 1.7;
+        }
+
+        .hero-features-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 36px;
+        }
+
+        .feature-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: var(--radius-full);
+            font-size: 0.85rem;
+            font-weight: 500;
+            background: #FFFFFF;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .feature-chip.lego { background: var(--secondary-light); border-color: #FDE68A; color: var(--secondary); }
+        .feature-chip.macro { background: var(--tertiary-light); border-color: #A7F3D0; color: var(--tertiary); }
+        .feature-chip.cart { background: var(--primary-light); border-color: #99F6E4; color: var(--primary); }
+
+        .hero-cta-group {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .hero-guarantee {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 0.85rem;
+            color: var(--neutral-muted);
+        }
+
+        /* Hero Showcase Mockup */
+        .hero-mockup-wrapper {
+            position: relative;
+        }
+
+        .mockup-card-main {
+            background: #FFFFFF;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-hover);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .mockup-card-main:hover {
+            transform: translateY(-4px);
+        }
+
+        .mockup-header-bar {
+            padding: 14px 18px;
+            background: #FAFAFA;
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .mockup-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .mockup-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #CBD5E1;
+        }
+
+        .mockup-img {
+            width: 100%;
+            display: block;
+            object-fit: cover;
+        }
+
+        /* Floating Interactive Badges on Hero */
+        .float-badge {
+            position: absolute;
+            background: #FFFFFF;
+            padding: 12px 18px;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 12px 28px -6px rgba(15, 23, 42, 0.15);
+            border: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .float-badge.left {
+            top: -20px;
+            left: -20px;
+            animation-delay: 0s;
+        }
+
+        .float-badge.right {
+            bottom: -20px;
+            right: -20px;
+            animation-delay: 2s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .float-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .float-text strong {
+            display: block;
+            font-size: 0.95rem;
+            color: var(--neutral-dark);
+        }
+
+        .float-text span {
+            font-size: 0.78rem;
+            color: var(--neutral-muted);
+        }
+
+        /* ===== METRICS BAR ===== */
+        .metrics-strip {
+            background: #FFFFFF;
+            border-top: 1px solid var(--border-subtle);
+            border-bottom: 1px solid var(--border-subtle);
+            padding: 32px 0;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            text-align: center;
+        }
+
+        .metric-item {
+            padding: 0 16px;
+            border-left: 1px solid var(--border-subtle);
+        }
+
+        .metric-item:last-child {
+            border-left: none;
+        }
+
+        .metric-num {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1.2;
+            margin-bottom: 4px;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            color: var(--neutral-muted);
+            font-weight: 500;
+        }
+
+        /* ===== VALUE PROPOSITION: PROBLEM VS SOLUTION ===== */
+        .section-padding {
+            padding: 90px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 720px;
+            margin: 0 auto 56px;
+        }
+
+        .section-tag {
+            display: inline-block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            background: var(--primary-light);
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .section-title {
+            font-size: 2.3rem;
+            font-weight: 800;
+            color: var(--neutral-dark);
+            margin-bottom: 16px;
+            line-height: 1.25;
+        }
+
+        .section-desc {
+            font-size: 1.05rem;
+            color: var(--neutral-muted);
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        .compare-box {
+            background: #FFFFFF;
+            border-radius: var(--radius-xl);
+            padding: 36px;
+            border: 1px solid var(--border-subtle);
+            box-shadow: var(--shadow-card);
+        }
+
+        .compare-box.bad {
+            border-color: #FECACA;
+            background: linear-gradient(180deg, #FFF5F5 0%, #FFFFFF 30%);
+        }
+
+        .compare-box.good {
+            border-color: #A7F3D0;
+            background: linear-gradient(180deg, #F0FDF4 0%, #FFFFFF 30%);
+            box-shadow: 0 10px 30px -10px rgba(15, 118, 110, 0.15);
+        }
+
+        .compare-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .compare-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+
+        .compare-box.bad .compare-icon { background: #FEE2E2; }
+        .compare-box.good .compare-icon { background: var(--tertiary-light); }
+
+        .compare-header h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .compare-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 16px;
+            font-size: 0.95rem;
+            color: var(--neutral-slate);
+        }
+
+        .compare-list li .bullet {
+            font-weight: bold;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            margin-top: -2px;
+        }
+
+        .compare-box.bad .bullet { color: #DC2626; }
+        .compare-box.good .bullet { color: var(--tertiary); }
+
+        /* ===== THE LEGO MEAL PREP METHOD (חוקי הליבה של האפיון) ===== */
+        .lego-section {
+            background: #FFFFFF;
+            border-top: 1px solid var(--border-subtle);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .lego-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+        }
+
+        .lego-card {
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 32px 28px;
+            background: var(--bg-canvas);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lego-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+            height: 4px;
+        }
+
+        .lego-card.anchor::before { background: var(--primary); }
+        .lego-card.quick::before { background: var(--secondary); }
+        .lego-card.backup::before { background: var(--tertiary); }
+
+        .lego-card:hover {
+            transform: translateY(-6px);
+            background: #FFFFFF;
+            box-shadow: var(--shadow-hover);
+            border-color: var(--border-active);
+        }
+
+        .lego-pill {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: var(--radius-full);
+            margin-bottom: 18px;
+        }
+
+        .lego-card.anchor .lego-pill { background: var(--primary-light); color: var(--primary); }
+        .lego-card.quick .lego-pill { background: var(--secondary-light); color: var(--secondary); }
+        .lego-card.backup .lego-pill { background: var(--tertiary-light); color: var(--tertiary); }
+
+        .lego-card h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--neutral-dark);
+        }
+
+        .lego-card p {
+            color: var(--neutral-muted);
+            font-size: 0.92rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .lego-card .example-badge {
+            background: #FFFFFF;
+            border: 1px dashed var(--border-active);
+            border-radius: var(--radius-sm);
+            padding: 10px 14px;
+            font-size: 0.85rem;
+            color: var(--neutral-slate);
+        }
+
+        /* ===== PRODUCT UI SHOWCASE TABS (מה-UX/UI האמיתי) ===== */
+        .showcase-section {
+            background: var(--bg-canvas);
+        }
+
+        .tab-triggers {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: #FFFFFF;
+            border: 1px solid var(--border-subtle);
+            padding: 12px 24px;
+            border-radius: var(--radius-full);
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--neutral-slate);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: #FFFFFF;
+            border-color: var(--primary);
+            box-shadow: 0 4px 14px rgba(15, 118, 110, 0.25);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .showcase-display-card {
+            background: #FFFFFF;
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--border-subtle);
+            box-shadow: var(--shadow-hover);
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .showcase-media {
+            background: #F1F5F9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-left: 1px solid var(--border-subtle);
+        }
+
+        .showcase-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            max-height: 520px;
+        }
+
+        .showcase-info {
+            padding: 44px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .showcase-info h3 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--neutral-dark);
+            margin-bottom: 16px;
+        }
+
+        .showcase-info p {
+            color: var(--neutral-muted);
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+
+        .feature-bullets {
+            margin-bottom: 32px;
+        }
+
+        .feature-bullets li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--neutral-slate);
+        }
+
+        .feature-bullets li .check {
+            width: 20px;
+            height: 20px;
+            background: var(--tertiary-light);
+            color: var(--tertiary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        /* ===== ONBOARDING FLOW IN 90 SECONDS ===== */
+        .flow-steps-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            position: relative;
+        }
+
+        .flow-step-item {
+            background: #FFFFFF;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 28px 20px;
+            text-align: center;
+            box-shadow: var(--shadow-card);
+            transition: all 0.2s;
+        }
+
+        .flow-step-item:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+        }
+
+        .step-circle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 1.15rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+        }
+
+        .flow-step-item h4 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--neutral-dark);
+        }
+
+        .flow-step-item p {
+            font-size: 0.85rem;
+            color: var(--neutral-muted);
+            line-height: 1.5;
+        }
+
+        /* ===== PANTRY & SMART CART SECTION (שכבת המזווה) ===== */
+        .pantry-section {
+            background: #FFFFFF;
+            border-top: 1px solid var(--border-subtle);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .pantry-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: center;
+        }
+
+        .pantry-card-sample {
+            background: var(--bg-canvas);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-xl);
+            padding: 24px;
+        }
+
+        .pantry-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: #FFFFFF;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-subtle);
+            margin-bottom: 10px;
+        }
+
+        .pantry-row.pantry-layer {
+            background: #F8FAFC;
+            border-style: dashed;
+        }
+
+        .pantry-tag {
+            font-size: 0.72rem;
+            padding: 2px 8px;
+            border-radius: var(--radius-full);
+            font-weight: 600;
+        }
+
+        .pantry-tag.fresh { background: var(--tertiary-light); color: var(--tertiary); }
+        .pantry-tag.dry { background: var(--secondary-light); color: var(--secondary); }
+
+        /* ===== TESTIMONIALS & STATS ===== */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+        }
+
+        .testimonial-box {
+            background: #FFFFFF;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 32px 24px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .user-rating {
+            color: #F59E0B;
+            font-size: 0.95rem;
+            margin-bottom: 14px;
+        }
+
+        .testimonial-box p {
+            color: var(--neutral-slate);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .user-info h5 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--neutral-dark);
+        }
+
+        .user-info span {
+            font-size: 0.8rem;
+            color: var(--neutral-muted);
+        }
+
+        /* ===== FINAL CTA BANNER ===== */
+        .cta-banner {
+            background: linear-gradient(135deg, var(--neutral-dark) 0%, #115E59 100%);
+            color: #FFFFFF;
+            border-radius: var(--radius-xl);
+            padding: 64px 48px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.2);
+            margin: 40px 0 80px;
+        }
+
+        .cta-banner h2 {
+            font-size: 2.6rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .cta-banner p {
+            font-size: 1.15rem;
+            color: rgba(255, 255, 255, 0.85);
+            max-width: 600px;
+            margin: 0 auto 36px;
+        }
+
+        .cta-banner .btn-cta {
+            background: #FFFFFF;
+            color: var(--primary);
+            font-size: 1.05rem;
+            padding: 14px 36px;
+            border-radius: var(--radius-full);
+            font-weight: 700;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-banner .btn-cta:hover {
+            background: var(--primary-light);
+            transform: scale(1.03);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: #FFFFFF;
+            border-top: 1px solid var(--border-subtle);
+            padding: 50px 0 30px;
+            font-size: 0.9rem;
+            color: var(--neutral-muted);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 14px;
+        }
+
+        .footer-col h4 {
+            color: var(--neutral-dark);
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-col a:hover {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            padding-top: 24px;
+            border-top: 1px solid var(--border-subtle);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .hero-grid, .showcase-display-card, .pantry-grid, .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+            .showcase-media { border-left: none; border-bottom: 1px solid var(--border-subtle); }
+            .hero-title { font-size: 2.5rem; }
+            .lego-cards-grid, .testimonials-grid { grid-template-columns: 1fr; }
+            .flow-steps-grid { grid-template-columns: repeat(2, 1fr); }
+            .metrics-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+            .metric-item { border-left: none; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu { display: none; }
+            .container { padding: 0 16px; }
+            .nav-inner { height: 64px; gap: 8px; }
+            .logo-badge, .nav-actions .btn-secondary { display: none; }
+            .nav-actions .btn-primary { padding: 8px 12px; font-size: 0.8rem; white-space: nowrap; }
+            .logo-wrap { font-size: 1.2rem; gap: 8px; }
+            .logo-img { width: 34px; height: 34px; }
+            .hero-cta-group { flex-direction: column; align-items: stretch; }
+            .hero-cta-group .btn { width: 100%; }
+            .hero-guarantee { flex-wrap: wrap; gap: 6px 10px; }
+            .float-badge.left { left: 8px; top: -16px; }
+            .float-badge.right { right: 8px; bottom: -16px; }
+            .section-padding { padding: 56px 0; }
+            .section-title { font-size: 1.7rem; }
+            .compare-box, .showcase-info { padding: 24px; }
+            .metrics-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+            .metric-num { font-size: 1.6rem; }
+            .hero { padding: 40px 0; }
+            .hero-title { font-size: 2.1rem; }
+            .flow-steps-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+            .cta-banner { padding: 40px 20px; }
+            .cta-banner h2 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <div class="container nav-inner">
+            <div class="logo-wrap">
+                <img src="assets/screen1.png" alt="ShelfSense Logo" class="logo-img">
+                <span>ShelfSense</span>
+                <span class="logo-badge">תזונה מדויקת • סל חכם</span>
+            </div>
+            
+            <nav class="nav-menu">
+                <a href="dashboard.html" class="nav-link">שיטת הלגו (Meal Prep)</a>
+                <a href="recipe.html" class="nav-link">איך זה נראה באפליקציה</a>
+                <a href="onboarding.html" class="nav-link">אונבורדינג ב-90 שניות</a>
+                <a href="cart.html" class="nav-link">סל קניות ומזווה</a>
+                <a href="#reviews" class="nav-link">המלצות</a>
+            </nav>
+
+            <div class="nav-actions">
+                <a href="onboarding.html" class="btn btn-secondary">כניסת משתמש</a>
+                <a href="onboarding.html" class="btn btn-primary">בנה תפריט שבועי חינם</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-grid">
+                <!-- Text Column -->
+                <div class="hero-content">
+                    <div class="hero-pill">
+                        <span class="dot"></span>
+                        פלטפורמת תזונה חכמה ראשונה בישראל המחוברת ישירות לסופר
+                    </div>
+
+                    <h1 class="hero-title">
+                        תזונה מדויקת ומאקרו.<br>
+                        <span class="highlight">סל קניות אוטומטי.</span><br>
+                        בלי לזרוק גרם אחד לפח.
+                    </h1>
+
+                    <p class="hero-subtitle">
+                        ShelfSense מגדירה מראש את יעדי המאקרו והתקציב שלך, בונה תפריט שבועי מודולרי 
+                        <strong>("שיטת הלגו")</strong> ומתרגמת אותו ישירות לעגלת קניות ברשתות השיווק המובילות (רמי לוי, שופרסל, יוחננוף).
+                    </p>
+
+                    <div class="hero-features-chips">
+                        <div class="feature-chip lego">🧱 2 ארוחות עוגן + ארוחות מהירות</div>
+                        <div class="feature-chip macro">⚖️ ±5% דיוק קלורי ומאקרו</div>
+                        <div class="feature-chip cart">🛒 ייצוא עגלה לסופר ברגע</div>
+                    </div>
+
+                    <div class="hero-cta-group">
+                        <a href="onboarding.html" class="btn btn-primary" style="padding: 14px 30px; font-size: 1.05rem;">
+                            🚀 התחילו אונבורדינג ב-90 שניות
+                        </a>
+                        <a href="recipe.html" class="btn btn-secondary" style="padding: 14px 24px;">
+                            📱 צפו במסכי האפליקציה
+                        </a>
+                    </div>
+
+                    <div class="hero-guarantee">
+                        <span>✓ ללא צורך בהזנה ידנית מתישה</span>
+                        <span>•</span>
+                        <span>✓ חיסכון ממוצע של ₪65 בשבוע</span>
+                        <span>•</span>
+                        <span>✓ אפס בזבוז מזון</span>
+                    </div>
+                </div>
+
+                <!-- Visual Showcase Mockup -->
+                <div class="hero-mockup-wrapper">
+                    <div class="mockup-card-main">
+                        <div class="mockup-header-bar">
+                            <div class="mockup-dots">
+                                <span class="mockup-dot"></span>
+                                <span class="mockup-dot"></span>
+                                <span class="mockup-dot"></span>
+                            </div>
+                            <span style="font-size: 0.8rem; font-weight: 600; color: var(--neutral-muted);">דשבורד תכנון שבועי • ShelfSense</span>
+                            <span></span>
+                        </div>
+                        <img src="assets/screen20.png" alt="ShelfSense Weekly Meal Prep Dashboard" class="mockup-img">
+                    </div>
+
+                    <!-- Floating Badges -->
+                    <div class="float-badge left">
+                        <div class="float-icon" style="background: var(--tertiary-light); color: var(--tertiary);">💰</div>
+                        <div class="float-text">
+                            <strong>₪385.40 לסל שבועי</strong>
+                            <span>חיסכון של ₪42.20 מול שופרסל</span>
+                        </div>
+                    </div>
+
+                    <div class="float-badge right">
+                        <div class="float-icon" style="background: var(--primary-light); color: var(--primary);">⏱️</div>
+                        <div class="float-text">
+                            <strong>1.5 שעות בישול</strong>
+                            <span>לכל השבוע מראש (Cook Once, Eat 3x)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- METRICS STRIP -->
+    <div class="metrics-strip">
+        <div class="container">
+            <div class="metrics-grid">
+                <div class="metric-item">
+                    <div class="metric-num">90 שניות</div>
+                    <div class="metric-label">אונבורדינג מהיר להגדרת מאקרו ותקציב</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-num">100%</div>
+                    <div class="metric-label">הגנה מפני שבירת מתכונים ומאקרו</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-num">₪65-</div>
+                    <div class="metric-label">חיסכון שבועי ממוצע על מוצרי סופר</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-num">0%</div>
+                    <div class="metric-label">בזבוז מזון הודות להפרדת שכבת מזווה</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- THE PROBLEM VS THE SOLUTION -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">למה כולם נשברים?</span>
+                <h2 class="section-title">העומס התפעולי שמכשיל כל דיאטה ובריאות</h2>
+                <p class="section-desc">
+                    אנשים רוצים לאכול בריא ולחסוך כסף, אבל המציאות מנצחת אותם במטבח ובסופרמרקט.
+                </p>
+            </div>
+
+            <div class="comparison-grid">
+                <!-- Old Way -->
+                <div class="compare-box bad">
+                    <div class="compare-header">
+                        <div class="compare-icon">❌</div>
+                        <div>
+                            <h3>הדרך הישנה והמתישה</h3>
+                            <span style="font-size: 0.85rem; color: #EF4444;">(MyFitnessPal / רשימות ידניות)</span>
+                        </div>
+                    </div>
+                    <ul class="compare-list">
+                        <li>
+                            <span class="bullet">✗</span>
+                            <span><strong>הזנה ידנית אינסופית:</strong> לסרוק ברקודים ולהקליד גרמים של כל עלה חסה.</span>
+                        </li>
+                        <li>
+                            <span class="bullet">✗</span>
+                            <span><strong>עייפות מבישול יומיומי:</strong> להמציא מחדש כל ערב מה לבשל אחרי יום עבודה ארוך.</span>
+                        </li>
+                        <li>
+                            <span class="bullet">✗</span>
+                            <span><strong>בזבוז כסף ומזון:</strong> קונים חבילת עשבי תיבול שלמה בשביל 2 כפיות, והשאר נרקב במקרר.</span>
+                        </li>
+                        <li>
+                            <span class="bullet">✗</span>
+                            <span><strong>נתק מהסופר:</strong> צריך להעתיק ידנית כל רכיב לאתר רמי לוי או שופרסל.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ShelfSense Way -->
+                <div class="compare-box good">
+                    <div class="compare-header">
+                        <div class="compare-icon">✅</div>
+                        <div>
+                            <h3>המהפכה של ShelfSense</h3>
+                            <span style="font-size: 0.85rem; color: var(--tertiary);">תזונה אוטומטית מקצה לקצה</span>
+                        </div>
+                    </div>
+                    <ul class="compare-list">
+                        <li>
+                            <span class="bullet">✓</span>
+                            <span><strong>שיטת הלגו (Meal Prep מודולרי):</strong> מבשלים 2 עוגנים עיקריים ומקבלים גיוון שבועי מושלם.</span>
+                        </li>
+                        <li>
+                            <span class="bullet">✓</span>
+                            <span><strong>חוקי החלפת מנות:</strong> החלפה בלחיצה ששומרת אוטומטית על ±5% קלוריות ו-±10% חלבון.</span>
+                        </li>
+                        <li>
+                            <span class="bullet">✓</span>
+                            <span><strong>איחוד כמויות חכם (Aggregation):</strong> המערכת מאחדת רכיבים מכל המתכונים לאריזות סופר ריאליות.</span>
+                        </li>
+                        <li>
+                            <span class="bullet">✓</span>
+                            <span><strong>הזרקת עגלה בלחיצה אחת:</strong> העברת כל המק"טים ישירות לסופר אונליין לפי המחיר המשתלם ביותר.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LEGO METHOD (שיטת הלגו) -->
+    <section class="section-padding lego-section" id="lego-method">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">בלעדי ל-ShelfSense</span>
+                <h2 class="section-title">איך בנוי התפריט השבועי? שיטת הלגו</h2>
+                <p class="section-desc">
+                    לא 21 מנות שונות שאי אפשר להכין. התפריט מודולרי, חוסך זמן ומבטיח שתמיד יהיה לכם אוכל מוכן ומדויק.
+                </p>
+            </div>
+
+            <div class="lego-cards-grid">
+                <!-- Anchor Meals -->
+                <div class="lego-card anchor">
+                    <span class="lego-pill">בישול מרוכז • 2 עוגנים</span>
+                    <h3>ארוחות עוגן (Batch Cooking)</h3>
+                    <p>
+                        מנות עיקריות עשירות בחלבון שמבשלים פעם אחת בכמות גדולה (ביום ראשון ושלישי) ומספיקות ל-2–3 ימים כל אחת.
+                    </p>
+                    <div class="example-badge">
+                        🍗 <strong>לדוגמה:</strong> קערת עוף מקסיקני, שעועית שחורה ואורז בסמטי (הכנה של 25 דק' ל-3 מנות).
+                    </div>
+                </div>
+
+                <!-- Quick Meals -->
+                <div class="lego-card quick">
+                    <span class="lego-pill">הרכבה מהירה • 10-15 דק'</span>
+                    <h3>ארוחות מהירות (Quick Meals)</h3>
+                    <p>
+                        מנות קלות להרכבה יומיומית שאינן דורשות בישול מורכב. מושלם לערב קליל או צהריים מהירים שלא מתישים אתכם.
+                    </p>
+                    <div class="example-badge">
+                        🍳 <strong>לדוגמה:</strong> טורטייה עוף מפורק וגוואקמולי, או שקשוקת ירקות שורש ולחם מחמצת.
+                    </div>
+                </div>
+
+                <!-- Backup Meal -->
+                <div class="lego-card backup">
+                    <span class="lego-pill">עמיד במזווה • מגן מפני וולט</span>
+                    <h3>ארוחת גיבוי (Backup Meal)</h3>
+                    <p>
+                        מנה המבוססת על מוצרי מזווה יבשים ועמידים למקרה שחזרתם עייפים ואין לכם כוח. שום דבר טרי לא נרקב במקרר!
+                    </p>
+                    <div class="example-badge">
+                        🍜 <strong>לדוגמה:</strong> מוקפץ נודלס, טונה מעושנת, אפונה וטריאקי שומשום (8 דק' הכנה ממוצרי מזווה בלבד).
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- REAL APP UX/UI SHOWCASE (אינטראקטיבי לפי המסכים שהורדו) -->
+    <section class="section-padding showcase-section" id="screens">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">חוויית משתמש אמיתית</span>
+                <h2 class="section-title">הצצה למסכי האפליקציה של ShelfSense</h2>
+                <p class="section-desc">
+                    כל מסך תוכנן ברמת דיוק עילאית לפי ה-Design System של ShelfSense: נתוני מאקרו בזמן אמת, וידאו קצר של 15 שניות, וסל קניות מפוצל.
+                </p>
+            </div>
+
+            <!-- Tab Triggers -->
+            <div class="tab-triggers">
+                <button class="tab-btn active" onclick="switchTab('tab-dashboard', this)">
+                    📊 לוח תכנון שבועי
+                </button>
+                <button class="tab-btn" onclick="switchTab('tab-onboarding', this)">
+                    ⚙️ אשף אונבורדינג ב-90 שנ׳
+                </button>
+                <button class="tab-btn" onclick="switchTab('tab-recipe', this)">
+                    👨‍🍳 מתכון מודולרי & Reel
+                </button>
+                <button class="tab-btn" onclick="switchTab('tab-cart', this)">
+                    🛒 סל קניות חכם & מזווה
+                </button>
+            </div>
+
+            <!-- Tab 1: Dashboard -->
+            <div class="tab-content active" id="tab-dashboard">
+                <div class="showcase-display-card">
+                    <div class="showcase-media">
+                        <img src="assets/screen20.png" alt="Weekly Meal Prep Lego Screen">
+                    </div>
+                    <div class="showcase-info">
+                        <h3>דשבורד תכנון שבועי בשיטת הלגו</h3>
+                        <p>
+                            תמונת מצב שבועית מלאה: סך היעד הקלורי (2,150 קק"ל), מעקב תקציב מול רשת השיווק הזולה ביותר, 
+                            וחלוקת ימי השבוע לארוחות עוגן, ארוחות מהירות וארוחת מגן מוולט.
+                        </p>
+                        <ul class="feature-bullets">
+                            <li><span class="check">✓</span> כפתור "החלף מנה (±5%)" ששומר אוטומטית על ערכי המאקרו</li>
+                            <li><span class="check">✓</span> מד זמן בישול שבועי: 1.5 שעות בלבד לכל השבוע!</li>
+                            <li><span class="check">✓</span> השוואת מחירים בלייב: רמי לוי מול שופרסל וקרפור</li>
+                        </ul>
+                        <div>
+                            <a href="onboarding.html" class="btn btn-primary">נסו את הדשבורד</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 2: Onboarding -->
+            <div class="tab-content" id="tab-onboarding">
+                <div class="showcase-display-card">
+                    <div class="showcase-media">
+                        <img src="assets/screen14.png" alt="90 Seconds Onboarding Engine">
+                    </div>
+                    <div class="showcase-info">
+                        <h3>מנוע אונבורדינג אלגוריתמי (Live Engine)</h3>
+                        <p>
+                            4 צעדים פשוטים שלוקחים פחות מ-90 שניות. המנוע מחשב אוטומטית BMR ו-TDEE לפי הנתונים הפיזיים שלכם, 
+                            מגדיר פרופיל תקציב (חסכוני / מאוזן / חופשי) ומסנן מראש רכיבים שנואים ואלרגיות.
+                        </p>
+                        <ul class="feature-bullets">
+                            <li><span class="check">✓</span> חישוב יעד קלורי יומי וחלוקת גרמים לחלבון, פחמימה ושומן</li>
+                            <li><span class="check">✓</span> הגדרת פרופיל תקציב: ₪280 (סטודנט) / ₪380 (מאוזן) / ₪520 (פרימיום)</li>
+                            <li><span class="check">✓</span> סינון כשרות (הפרדת בשר וחלב) והחרגת רכיבים בלחיצה</li>
+                        </ul>
+                        <div>
+                            <a href="onboarding.html" class="btn btn-primary">התחילו אונבורדינג עכשיו</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 3: Recipe & Reel -->
+            <div class="tab-content" id="tab-recipe">
+                <div class="showcase-display-card">
+                    <div class="showcase-media">
+                        <img src="assets/screen.png" alt="Recipe Reel & Timer Workflow">
+                    </div>
+                    <div class="showcase-info">
+                        <h3>מתכונים עם Reel של 15 שניות ו-Workflow חכם</h3>
+                        <p>
+                            לא סתם טקסט של מתכון. לכל מנה יש סרטון קצר של 15 שניות שממחיש את שלבי ההכנה והחלוקה לקופסאות, 
+                            עם מפרט מצרכים מפוצל וטיימר בישול מרוכז.
+                        </p>
+                        <ul class="feature-bullets">
+                            <li><span class="check">✓</span> סרטון Reel של 15 שניות להמחשת החלוקה לקופסאות</li>
+                            <li><span class="check">✓</span> מפרט כמויות מותאם למספר המנות (1 מנה, 3 מנות עוגן)</li>
+                            <li><span class="check">✓</span> הוראות מדויקות לשמירה במקרר לשמירה על עסיסיות עד 4 ימים</li>
+                        </ul>
+                        <div>
+                            <a href="onboarding.html" class="btn btn-primary">צפו במאגר המתכונים</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 4: Cart & Pantry -->
+            <div class="tab-content" id="tab-cart">
+                <div class="showcase-display-card">
+                    <div class="showcase-media">
+                        <img src="assets/screen18.png" alt="Smart Cart & Pantry Layer">
+                    </div>
+                    <div class="showcase-info">
+                        <h3>סל קניות מאוחד והפרדת שכבת מזווה</h3>
+                        <p>
+                            הפתרון הגאוני לעודף מוצרים ובזבוז כסף: המערכת מפרידה בין מוצרים טריים מתכלים הנכנסים אוטומטית לעגלה, 
+                            לבין שכבת מזווה (שמן, תבלינים, סויה) שמסומנת כ"קיים בבית" ומונעת קניות כפולות.
+                        </p>
+                        <ul class="feature-bullets">
+                            <li><span class="check">✓</span> איחוד כמויות: 400 גרם עוף ממתכון א' + 600 גרם ממתכון ב' = 1 ק"ג בעגלה</li>
+                            <li><span class="check">✓</span> החלפת מותגים חכמה בתוך הסל להוזלת מחיר (מותג פרטי מול מותג מוביל)</li>
+                            <li><span class="check">✓</span> כפתור "ייצוא עגלה לסופר אונליין" (הזרקת מק"טים ישירות לרמי לוי)</li>
+                        </ul>
+                        <div>
+                            <a href="onboarding.html" class="btn btn-primary">העבר עגלה לסופר</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4 STEPS ONBOARDING SUMMARY -->
+    <section class="section-padding" id="onboarding">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">מהיר וקל</span>
+                <h2 class="section-title">איך מתחילים? 4 שלבים ב-90 שניות</h2>
+                <p class="section-desc">
+                    הגדרה חד-פעמית שמעבירה את המטבח שלכם לאוטומציה מלאה.
+                </p>
+            </div>
+
+            <div class="flow-steps-grid">
+                <div class="flow-step-item">
+                    <div class="step-circle">1</div>
+                    <h4>נתונים ויעדים</h4>
+                    <p>גיל, גובה, משקל ומטרה: חיטוב וגירעון קלורי, שמירה על משקל, או עלייה במסת שריר.</p>
+                </div>
+
+                <div class="flow-step-item">
+                    <div class="step-circle">2</div>
+                    <h4>פרופיל תקציב</h4>
+                    <p>בחירה בין חסכוני (סטודנט/בייסיק), מאוזן (סטנדרט) או חופשי (דגים טריים ובקר פרימיום).</p>
+                </div>
+
+                <div class="flow-step-item">
+                    <div class="step-circle">3</div>
+                    <h4>העדפות וכשרות</h4>
+                    <p>הגדרות כשרות, צמחוני/טבעוני, ללא גלוטן/לקטוז, וסימון מהיר של רכיבים שנואים.</p>
+                </div>
+
+                <div class="flow-step-item">
+                    <div class="step-circle">4</div>
+                    <h4>תפריט & סל לסופר</h4>
+                    <p>המערכת מייצרת תפריט שבועי מודולרי, מזריקה את המצרכים לעגלה ואתם מוכנים!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PANTRY ARCHITECTURE EXPLAINED -->
+    <section class="section-padding pantry-section" id="pantry">
+        <div class="container">
+            <div class="pantry-grid">
+                <div>
+                    <span class="section-tag">ארכיטקטורת סל חכמה</span>
+                    <h2 class="section-title">למה לא תקנו שוב תבלין או שמן שכבר יש לכם בארון?</h2>
+                    <p class="section-desc" style="margin-bottom: 24px;">
+                        ברוב האפליקציות, אם מתכון דורש שמן זית או רוטב סויה, הוא נכנס ישירות לעגלה. 
+                        ב-<strong>ShelfSense</strong> פיתחנו שכבת מזווה ייחודית:
+                    </p>
+                    <ul class="feature-bullets">
+                        <li>
+                            <span class="check">✓</span>
+                            <span><strong>סל מתכלה שבועי:</strong> בשר, עוף, ירקות, פירות, מוצרי חלב — נכנסים ישירות לעגלת הקניות.</span>
+                        </li>
+                        <li>
+                            <span class="check">✓</span>
+                            <span><strong>שכבת מזווה ותבלינים:</strong> מוגדרים כ"קיים בבית" כברירת מחדל. חסר לכם משהו? לחיצה אחת והוא מצטרף.</span>
+                        </li>
+                        <li>
+                            <span class="check">✓</span>
+                            <span><strong>Zero Waste (אפס פחת):</strong> קונים בדיוק מה שצריך בכמויות תואמות שבועיות.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="pantry-card-sample">
+                    <h4 style="margin-bottom: 16px; font-weight: 700; color: var(--neutral-dark);">תצוגת סל קניות מפוצל • ShelfSense</h4>
+                    
+                    <div style="font-size: 0.8rem; font-weight: 700; color: var(--tertiary); margin-bottom: 8px;">
+                        🥦 סל מתכלה שבועי (נכנס לעגלה אוטומטית)
+                    </div>
+                    <div class="pantry-row">
+                        <span>חזה עוף טרי פרוס (אריזת 1 ק"ג מאוחדת)</span>
+                        <span class="pantry-tag fresh">₪32.90</span>
+                    </div>
+                    <div class="pantry-row">
+                        <span>מארז ירקות מדויק (פלפלים, בצל יבש, חסה ערבית)</span>
+                        <span class="pantry-tag fresh">₪18.90</span>
+                    </div>
+
+                    <div style="font-size: 0.8rem; font-weight: 700; color: var(--secondary); margin: 18px 0 8px;">
+                        🧂 שכבת מזווה ותבלינים (מסומן כקיים בבית כברירת מחדל)
+                    </div>
+                    <div class="pantry-row pantry-layer">
+                        <span>שמן זית כתית מעולה 750 מ"ל</span>
+                        <span class="pantry-tag dry">קיים בבית (₪0)</span>
+                    </div>
+                    <div class="pantry-row pantry-layer">
+                        <span>אורז בסמטי הודי 1 ק"ג</span>
+                        <span class="pantry-tag dry">קיים בבית (₪0)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="section-padding" id="reviews">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">מהמשתמשים שלנו</span>
+                <h2 class="section-title">איך ShelfSense שינתה להם את השבוע</h2>
+                <p class="section-desc">סטודנטים, הורים עובדים ומתאמנים שמנהלים תזונה מדויקת בלי מאמץ.</p>
+            </div>
+
+            <div class="testimonials-grid">
+                <div class="testimonial-box">
+                    <div class="user-rating">★★★★★</div>
+                    <p>
+                        "שיטת הלגו פשוט הצילה אותי. בישלתי פעמיים בשבוע, הכל היה מדוד לקופסאות, 
+                        וביום חמישי כשהייתי גמור מהעבודה פשוט שלפתי את ארוחת הגיבוי. גאוני!"
+                    </p>
+                    <div class="user-profile">
+                        <div class="user-avatar">אב</div>
+                        <div class="user-info">
+                            <h5>איתי ברקוביץ'</h5>
+                            <span>מתאמן בחיטוב, תל אביב</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-box">
+                    <div class="user-rating">★★★★★</div>
+                    <p>
+                        "החיסכון בסופר אמיתי לגמרי. במקום לקנות בלי הכרה בשופרסל ולזרוק ירקות רקובים בסופ״ש, 
+                        העגלה של ShelfSense ברמי לוי יצאה בדיוק ₪385 לכל השבוע."
+                    </p>
+                    <div class="user-profile">
+                        <div class="user-avatar">שש</div>
+                        <div class="user-info">
+                            <h5>שיר שפירא</h5>
+                            <span>הייטקיסטית ואמא לשניים, רמת גן</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-box">
+                    <div class="user-rating">★★★★★</div>
+                    <p>
+                        "האונבורדינג לקח לי דקה וחצי. הוא ישר בנה לי תפריט עשיר בחלבון בלי גלוטן ובלי כוסברה 
+                        והעביר את כל המוצרים ישירות לעגלה. חוסך לי לפחות 4 שעות שבועיות."
+                    </p>
+                    <div class="user-profile">
+                        <div class="user-avatar">דכ</div>
+                        <div class="user-info">
+                            <h5>דניאל כהן</h5>
+                            <span>סטודנט להנדסה, חיפה</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FINAL CALL TO ACTION -->
+    <section class="container" id="cta">
+        <div class="cta-banner">
+            <h2>מוכנים להפסיק להיאבק עם התזונה והסופר?</h2>
+            <p>
+                הצטרפו לאלפי ישראלים שכבר נהנים מתפריט שבועי מדויק, בישול מרוכז בשיטת הלגו, 
+                וסל קניות אוטומטי שחוסך זמן וכסף.
+            </p>
+            <a href="onboarding.html" class="btn btn-cta">
+                🚀 התחילו עכשיו — 90 שניות ואתם מסודרים
+            </a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div class="footer-logo">
+                        <img src="assets/screen1.png" alt="ShelfSense" style="width: 32px; height: 32px;">
+                        <span>ShelfSense</span>
+                    </div>
+                    <p style="max-width: 340px; margin-bottom: 16px;">
+                        תזונה מדויקת • סל חכם • שיטת הלגו.<br>
+                        הפלטפורמה הישראלית הראשונה שמחברת בין יעדי מאקרו, תכנון שבועי ורשתות השיווק.
+                    </p>
+                    <div style="font-size: 0.8rem; color: var(--neutral-muted);">
+                        רשתות נתמכות: רמי לוי אונליין, שופרסל Online, קרפור, יוחננוף.
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h4>המוצר</h4>
+                    <ul>
+                        <li><a href="dashboard.html">שיטת הלגו (Meal Prep)</a></li>
+                        <li><a href="recipe.html">דשבורד שבועי</a></li>
+                        <li><a href="cart.html">סל קניות ומזווה</a></li>
+                        <li><a href="recipe.html">מאגר מתכונים ו-Reels</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>רשתות שיווק</h4>
+                    <ul>
+                        <li><a href="#">רמי לוי אונליין</a></li>
+                        <li><a href="#">שופרסל Online</a></li>
+                        <li><a href="#">יוחננוף</a></li>
+                        <li><a href="#">קרפור ישראל</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>חברה ומשפטי</h4>
+                    <ul>
+                        <li><a href="#">אודות ShelfSense</a></li>
+                        <li><a href="#">שקיפות נתונים ופרטיות</a></li>
+                        <li><a href="#">תנאי שימוש</a></li>
+                        <li><a href="#">נגישות</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2026 ShelfSense Israel. כל הזכויות שמורות. תוכנן באהבה לקהילת הפיטנס והקולינריה בישראל.</p>
+                <p>טכנולוגיית סנכרון מחירים בזמן אמת</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE JAVASCRIPT -->
+    <script>
+        // Tab switching for app screens showcase
+        function switchTab(tabId, element) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            
+            element.classList.add('active');
+            const targetTab = document.getElementById(tabId);
+            if (targetTab) {
+                targetTab.classList.add('active');
+            }
+        }
+
+        // Smooth scroll for anchors
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href !== '#') {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+

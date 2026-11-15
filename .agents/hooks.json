@@ -1,0 +1,12 @@
+{
+  "grill-sizzle-on-finish": {
+    "enabled": true,
+    "Stop": [
+      {
+        "type": "command",
+        "command": "powershell -ExecutionPolicy Bypass -File \"c:\\Users\\freet\\OneDrive\\Desktop\\shelfsense\\scripts\\play-sizzle-hook.ps1\"",
+        "timeout": 10
+      }
+    ]
+  }
+}

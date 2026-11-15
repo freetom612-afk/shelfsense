@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "shelfsense-static",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "scripts/serve.ps1", "-Root", "."],
+      "port": 5517
+    },
+    {
+      "name": "shelfsense-static-alt",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "scripts/serve.ps1", "-Root", ".", "-Port", "5518"],
+      "port": 5518
+    }
+  ]
+}

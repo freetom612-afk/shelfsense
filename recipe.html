@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="he"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ShelfSense - מדריך מתכון ועוגן בישול: קערת עוף מקסיקני</title>
+<!-- Google Fonts: Rubik -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script src="assets/data.js"></script><script src="assets/state.js"></script>
+<!-- Injected Tailwind Config -->
+<script src="assets/theme.js"></script>
+<style>
+    body {
+      font-family: 'Rubik', sans-serif;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      line-height: 1;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .fill-icon {
+      font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+    }
+    @keyframes videoProgress {
+      0% { width: 26%; }
+      50% { width: 62%; }
+      100% { width: 100%; }
+    }
+    .running-timeline {
+      animation: videoProgress 12s infinite linear;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex flex-col selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TOP APP BAR (Shared Components JSON Anchor) -->
+<header class="bg-surface-container-lowest/90 dark:bg-inverse-surface/90 backdrop-blur-md docked full-width top-0 sticky z-40 border-b border-outline-variant/60 dark:border-outline/40 shadow-sm dark:shadow-none">
+<div class="max-w-7xl mx-auto px-margin flex items-center justify-between w-full h-16 dir-rtl">
+<!-- Brand Logo & Main Nav -->
+<div class="flex items-center gap-space-lg">
+<a class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed flex items-center gap-space-xs tracking-tight" href="index.html">
+<span class="material-symbols-outlined text-primary text-3xl fill-icon" data-icon="restaurant_menu">restaurant_menu</span>
+<span>ShelfSense</span>
+</a>
+<!-- Desktop Navigation Links -->
+<nav class="hidden md:flex items-center gap-space-md">
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-on-surface dark:hover:text-inverse-on-surface font-normal transition-colors px-2 py-1 font-label-lg text-label-lg" href="dashboard.html">לוח שבועי</a>
+<a aria-current="page" class="border-b-2 border-primary dark:border-primary-fixed text-primary dark:text-primary-fixed font-semibold pb-1 px-2 font-label-lg text-label-lg" href="recipe.html">מתכונים ועוגנים</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-on-surface dark:hover:text-inverse-on-surface font-normal transition-colors px-2 py-1 font-label-lg text-label-lg" href="cart.html">סל קניות חכם</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-on-surface dark:hover:text-inverse-on-surface font-normal transition-colors px-2 py-1 font-label-lg text-label-lg" href="onboarding.html">הגדרות</a>
+</nav>
+</div>
+<!-- Right Trailing Actions -->
+<div class="flex items-center gap-space-sm">
+<div class="relative hidden lg:block">
+<input class="h-10 w-64 pl-4 pr-10 rounded-lg border border-outline-variant text-body-md font-body-md bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="חיפוש מתכון, רכיב, ערכי מאקרו..." type="text"/>
+<span class="material-symbols-outlined absolute right-3 top-2.5 text-outline pointer-events-none" data-icon="search">search</span>
+</div>
+<button aria-label="Notifications" class="p-2 text-on-surface-variant hover:bg-surface-container-low transition-colors duration-150 rounded-lg active:scale-[0.98]">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button aria-label="Shopping Cart" class="p-2 text-on-surface-variant hover:bg-surface-container-low transition-colors duration-150 rounded-lg relative active:scale-[0.98]">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 bg-secondary-container rounded-full"></span>
+</button>
+<button class="hidden sm:flex items-center gap-1.5 bg-primary hover:bg-primary-container text-on-primary px-space-md py-2 rounded-lg font-label-lg text-label-lg transition-transform active:scale-[0.98] shadow-sm">
+<span class="material-symbols-outlined text-lg" data-icon="auto_awesome">auto_awesome</span>
+<span>בנה תפריט שבועי</span>
+</button>
+<!-- Profile Avatar -->
+<div class="w-9 h-9 rounded-full bg-surface-container-high border border-outline-variant flex items-center justify-center font-semibold text-primary overflow-hidden ml-1">
+<span class="font-label-md text-label-md">ר.א</span>
+</div>
+</div>
+</div>
+</header>
+<!-- MAIN CANVAS -->
+<main class="flex-grow max-w-7xl w-full mx-auto px-margin-mobile md:px-margin py-space-md md:py-space-lg flex flex-col gap-space-lg">
+<!-- 1. HERO VIDEO PLAYER SECTION (CRITICAL COMPONENT) -->
+<section id="recipe-video" class="w-full bg-surface-container-lowest rounded-xl border border-outline-variant/70 shadow-sm overflow-hidden flex flex-col">
+<!-- Top Video Frame Bar -->
+<div class="px-space-md py-space-sm bg-surface-container-low border-b border-outline-variant/60 flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 text-primary font-label-sm text-label-sm border border-primary/20">
+<span class="w-2 h-2 rounded-full bg-primary animate-ping"></span>
+<span>🎥 סרטון מתכון רץ (15 שניות Reel)</span>
+</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm hidden sm:inline">
+            ארוחת עוגן שבועית - Batch Prep
+          </span>
+</div>
+<a class="flex items-center gap-space-xs text-primary font-label-md text-label-md font-semibold hover:underline" href="reel.html">
+<span class="material-symbols-outlined text-base" data-icon="smartphone">smartphone</span>
+<span>צפייה ב-Reel אנכי</span>
+</a>
+</div>
+<!-- Video Display Container (Dual Dynamic Angle Player) -->
+<div class="relative w-full aspect-[4/5] sm:aspect-[16/9] md:aspect-[21/9] lg:aspect-[2.4/1] bg-inverse-surface overflow-hidden group">
+<!-- Running Video Layer (Dual Frame Cross-Dissolve Mockup) -->
+<div class="absolute inset-0 grid grid-cols-1 md:grid-cols-2 gap-0.5">
+<!-- Frame 1: Action Cook (Image 17) -->
+<div class="relative h-full overflow-hidden">
+<img alt="שלב צריבת העוף והשעועית במחבת לוהטת" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="assets/img/recipe-sear.jpg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-inverse-surface/90 via-transparent to-black/30"></div>
+<div class="absolute top-3 right-3 bg-inverse-surface/80 backdrop-blur-md text-surface text-label-sm font-label-sm px-2.5 py-1 rounded-md border border-white/20">
+              זווית A: טיגון וצריבה במחבת פסים
+            </div>
+</div>
+<!-- Frame 2: Plated Bowl (Image 16) -->
+<div class="relative h-full overflow-hidden hidden md:block">
+<img alt="מנת קערת עוף מקסיקני מוכנה לאריזה" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="assets/img/recipe-bowl.jpg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-inverse-surface/90 via-transparent to-black/30"></div>
+<div class="absolute top-3 right-3 bg-inverse-surface/80 backdrop-blur-md text-surface text-label-sm font-label-sm px-2.5 py-1 rounded-md border border-white/20">
+              זווית B: קערת הגשה מושלמת
+            </div>
+</div>
+</div>
+<!-- Video Overlay: Quick Scrub Stage Markers (Floating Pills) -->
+<div class="absolute top-12 left-4 right-4 hidden sm:flex items-center justify-between pointer-events-none">
+<div class="flex flex-wrap gap-2 pointer-events-auto">
+<button class="bg-surface-container-lowest/90 backdrop-blur-md text-primary font-label-sm text-label-sm px-3 py-1 rounded-full border border-primary shadow-sm hover:bg-primary hover:text-white transition-colors flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span>0-3s: הירו וערכים תזונתיים</span>
+</button>
+<button class="bg-inverse-surface/80 backdrop-blur-md text-surface font-label-sm text-label-sm px-3 py-1 rounded-full border border-white/20 hover:bg-white/20 transition-colors flex items-center gap-1">
+<span>3-10s: צריבת עוף והקפצה</span>
+</button>
+<button class="bg-inverse-surface/80 backdrop-blur-md text-surface font-label-sm text-label-sm px-3 py-1 rounded-full border border-white/20 hover:bg-white/20 transition-colors flex items-center gap-1">
+<span>10-15s: חלוקה ל-3 קופסאות</span>
+</button>
+</div>
+<span class="bg-secondary-container text-on-secondary font-label-sm text-label-sm px-2.5 py-1 rounded-md font-semibold tracking-wide hidden sm:block">
+            LIVE PREVIEW
+          </span>
+</div>
+<!-- Bottom Controls Overlay Bar -->
+<div class="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-black/95 via-black/60 to-transparent flex flex-col gap-2">
+<!-- Running Interactive Scrubber -->
+<div class="relative w-full h-2 bg-white/30 rounded-full overflow-hidden cursor-pointer">
+<div class="h-full bg-primary-fixed rounded-full relative" id="reel-progress" style="width: 26.7%;"></div>
+<!-- Stage marker notches -->
+<div class="absolute top-0 bottom-0 left-[20%] w-0.5 bg-white/70"></div>
+<div class="absolute top-0 bottom-0 left-[66%] w-0.5 bg-white/70"></div>
+</div>
+<!-- Video Control Buttons Strip -->
+<div class="flex items-center justify-between text-white pt-1">
+<div class="flex items-center gap-3">
+<!-- Play / Pause Button with Glow -->
+<button aria-label="Play/Pause" id="reel-play" class="w-10 h-10 rounded-full bg-primary hover:bg-primary-container text-on-primary flex items-center justify-center shadow-lg shadow-primary/30 transition-transform active:scale-95">
+<span class="material-symbols-outlined fill-icon text-2xl" data-icon="play_arrow">play_arrow</span>
+</button>
+<!-- Counter -->
+<div class="font-numeric-stat text-sm text-white/90 tracking-wide font-medium" style="font-variant-numeric: tabular-nums;">
+                <span id="reel-time">00:04</span> <span class="text-white/50">/ 00:15</span>
+</div>
+<!-- Replay / Back 5s -->
+<button aria-label="Rewind" id="reel-replay" class="text-white/80 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-xl" data-icon="replay">replay</span>
+</button>
+</div>
+<!-- Right Controls: Audio, Speed, Fullscreen -->
+<div class="flex items-center gap-3">
+<span class="hidden sm:inline px-2 py-0.5 rounded bg-white/20 text-white font-label-sm text-label-sm cursor-pointer hover:bg-white/30 transition-colors">
+                1.0x מהירות
+              </span>
+<button aria-label="Mute / Unmute" class="text-white/80 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-xl" data-icon="volume_up">volume_up</span>
+</button>
+<button aria-label="Fullscreen" class="text-white/80 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-xl" data-icon="fullscreen">fullscreen</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 2. RECIPE TITLE, MACROS & COST (rendered from assets/data.js by ?dish=) -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start" id="recipe-head" style="font-variant-numeric: tabular-nums;"></section>
+<!-- 3. PORTIONS & INGREDIENTS (fresh vs pantry) -->
+<section class="bg-surface-container-lowest rounded-xl border border-outline-variant/70 p-space-md md:p-space-lg shadow-sm" style="font-variant-numeric: tabular-nums;">
+<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-md border-b border-outline-variant/60 pb-space-md mb-space-md">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface font-semibold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="receipt_long">receipt_long</span>
+<span>רשימת מצרכים מדויקת</span>
+</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-0.5">הכמויות מתעדכנות לפי מספר המנות. מוצרי מזווה מסומנים כקיימים בבית.</p>
+</div>
+<div class="bg-surface-container-low p-1 rounded-lg border border-outline-variant/60 flex items-center gap-1 self-stretch sm:self-auto" role="radiogroup" aria-label="מספר מנות" id="portion-control">
+<button type="button" class="portion-btn px-3 py-1.5 rounded-md font-label-md text-label-md" data-portions="1" role="radio">1 מנה</button>
+<button type="button" class="portion-btn px-3 py-1.5 rounded-md font-label-md text-label-md" data-portions="3" role="radio">3 מנות</button>
+<button type="button" class="portion-btn px-3 py-1.5 rounded-md font-label-md text-label-md" data-portions="5" role="radio">5 מנות</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-lg">
+<div class="flex flex-col gap-space-md">
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary fill-icon" data-icon="shopping_basket">shopping_basket</span>
+<span>מתכלים (נכנסים לסל)</span>
+</h3>
+<div class="space-y-2.5" id="ing-fresh"></div>
+<a class="mt-2 w-full bg-primary hover:bg-primary-container text-on-primary py-3 rounded-lg font-label-lg text-label-lg flex items-center justify-center gap-2 transition-transform active:scale-[0.98] shadow-sm" href="cart.html">
+<span class="material-symbols-outlined text-xl" data-icon="shopping_cart">shopping_cart</span>
+<span>לסל השבועי (כבר כולל את המנה הזו)</span>
+</a>
+</div>
+<div class="flex flex-col gap-space-md">
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" data-icon="kitchen">kitchen</span>
+<span>שכבת מזווה (קיים בבית)</span>
+</h3>
+<div class="space-y-2.5" id="ing-pantry"></div>
+</div>
+</div>
+</section>
+<!-- 4. STEP-BY-STEP BATCH COOKING INSTRUCTIONS -->
+<section id="recipe-steps" class="bg-surface-container-lowest rounded-xl border border-outline-variant/70 p-space-md md:p-space-lg shadow-sm">
+<div class="flex items-center justify-between mb-space-lg border-b border-outline-variant/60 pb-space-sm">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface font-semibold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="timeline">timeline</span>
+<span>שלבי הכנה ועוגן בישול מתוזמן (Workflow)</span>
+</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">
+            בצעו במקביל לחיסכון מרבי בזמן המטבח – סך הכל 20-25 דקות בלבד
+          </p>
+</div>
+<span class="hidden md:inline-flex items-center gap-1 font-label-md text-label-md text-primary font-semibold">
+<span class="material-symbols-outlined text-base" data-icon="timer">timer</span>
+<span>טיימר לכל שלב</span>
+</span>
+</div>
+<!-- Step Cards Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-md" id="steps-grid">
+<!-- STEP 1 -->
+<div class="bg-surface-container-low/40 rounded-xl border border-outline-variant/60 p-space-md flex flex-col justify-between hover:border-primary transition-all">
+<div>
+<div class="flex items-center justify-between mb-3">
+<span class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-label-lg">1</span>
+<span class="font-label-sm text-label-sm bg-surface-container text-on-surface-variant px-2 py-0.5 rounded">12 דק׳ בישול</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-semibold mb-2">בישול בסיס האורז הבסמטי</h4>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+              שוטפים את האורז עד למים צלולים. מבשלים ביחס של 1:1.5 מים רותחים עם מעט מלח. מכבים ומשהים 5 דקות מכוסה לשמירה על מרקם אוורירי ומופרד.
+            </p>
+</div>
+<div class="mt-4 pt-3 border-t border-outline-variant/40 flex items-center gap-1 text-label-sm text-primary">
+<span class="material-symbols-outlined text-base" data-icon="check">check</span>
+<span>בסיס יציב לקירור</span>
+</div>
+</div>
+<!-- STEP 2 -->
+<div class="bg-surface-container-low/40 rounded-xl border border-outline-variant/60 p-space-md flex flex-col justify-between hover:border-primary transition-all">
+<div>
+<div class="flex items-center justify-between mb-3">
+<span class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-label-lg">2</span>
+<span class="font-label-sm text-label-sm bg-surface-container text-on-surface-variant px-2 py-0.5 rounded">8 דק׳ במחבת</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-semibold mb-2">תיבול וצריבת חזה העוף</h4>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+              מערבבים את רצועות העוף עם כף שמן זית, פפריקה מעושנת, כמון, שום ומלח. מחממים מחבת פסים לוהטת וצורבים 3-4 דקות מכל צד עד להזהבה עסיסית.
+            </p>
+</div>
+<div class="mt-4 pt-3 border-t border-outline-variant/40 flex items-center gap-1 text-label-sm text-primary">
+<span class="material-symbols-outlined text-base" data-icon="local_fire_department">local_fire_department</span>
+<span>צריבה בטמפרטורה גבוהה</span>
+</div>
+</div>
+<!-- STEP 3 -->
+<div class="bg-surface-container-low/40 rounded-xl border border-outline-variant/60 p-space-md flex flex-col justify-between hover:border-primary transition-all">
+<div>
+<div class="flex items-center justify-between mb-3">
+<span class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-label-lg">3</span>
+<span class="font-label-sm text-label-sm bg-surface-container text-on-surface-variant px-2 py-0.5 rounded">3 דק׳ הקפצה</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-semibold mb-2">הקפצת שעועית וירקות</h4>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+              באותה מחבת ללא שטיפה, מקפיצים בצל, פלפלים ועגבניות, ומוסיפים את השעועית השחורה לספיגת מיצי הצריבה והתבלינים.
+            </p>
+</div>
+<div class="mt-4 pt-3 border-t border-outline-variant/40 flex items-center gap-1 text-label-sm text-secondary font-medium">
+<span class="material-symbols-outlined text-base" data-icon="skillet">skillet</span>
+<span>איסוף טעמים מירבי</span>
+</div>
+</div>
+<!-- STEP 4 -->
+<div class="bg-surface-container-low/40 rounded-xl border border-outline-variant/60 p-space-md flex flex-col justify-between hover:border-primary transition-all">
+<div>
+<div class="flex items-center justify-between mb-3">
+<span class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-label-lg">4</span>
+<span class="font-label-sm text-label-sm bg-tertiary-fixed text-on-tertiary-fixed px-2 py-0.5 rounded font-bold">אחסון שבועי</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-semibold mb-2">הרכבה וחלוקה לקופסאות</h4>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+              מחלקים בצורה שווה ל-3 קופסאות זכוכית אטומות הרמטית: מצע אורז, רצועות עוף צרובות, ותערובת שעועית וירקות.
+            </p>
+</div>
+<div class="mt-4 pt-3 border-t border-outline-variant/40 flex items-center gap-1 text-label-sm text-tertiary font-semibold">
+<span class="material-symbols-outlined text-base fill-icon" data-icon="inventory_2">inventory_2</span>
+<span>טרי במקרר ל-4 ימים</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 5. CHEF BATCH PREP PRO-TIPS CALLOUT -->
+<section class="bg-gradient-to-l from-primary/10 to-surface-container-low p-space-md rounded-xl border border-primary/20 flex flex-col sm:flex-row items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-md">
+<div class="w-12 h-12 rounded-full bg-primary text-on-primary flex items-center justify-center shrink-0 shadow-sm">
+<span class="material-symbols-outlined text-2xl" data-icon="tips_and_updates">tips_and_updates</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">המלצת שף המערכת לשמירה על עסיסיות במקרר</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-0.5">
+            לפני חימום חוזר במיקרוגל, הניחו קוביית קרח קטנה או רססו מעט מים מעל מצע האורז וכסו במכסה מוגבה. האורז יחזור להיות רך ואוורירי בדיוק כמו ברגע הבישול.
+          </p>
+</div>
+</div>
+<button class="shrink-0 bg-surface-container-lowest hover:bg-surface-container-low text-primary font-label-lg text-label-lg px-space-md py-2.5 rounded-lg border border-primary/30 transition-transform active:scale-95 shadow-sm">
+        שמור מתכון לספר האישי
+      </button>
+</section>
+</main>
+<!-- WEB FOOTER (Shared Components JSON Anchor) -->
+<footer class="w-full mt-auto bg-surface-container-low dark:bg-inverse-surface border-t border-outline-variant/50 dark:border-outline/30">
+<div class="max-w-7xl mx-auto px-margin py-space-xl flex flex-col md:flex-row justify-between items-center gap-space-lg w-full dir-rtl">
+<!-- Brand & Copyright -->
+<div class="flex flex-col gap-1 text-center md:text-right">
+<div class="font-headline-sm text-headline-sm font-bold text-primary dark:text-primary-fixed flex items-center justify-center md:justify-start gap-1">
+<span class="material-symbols-outlined text-primary fill-icon" data-icon="restaurant_menu">restaurant_menu</span>
+<span>ShelfSense</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-surface-variant">
+          © 2025 ShelfSense. כל הזכויות שמורות. תוכנן באהבה לקהילת הפיטנס והקולינריה בישראל.
+        </p>
+</div>
+<!-- Links Array from JSON -->
+<nav class="flex flex-wrap items-center justify-center gap-space-md font-label-md text-label-md">
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors" href="#">אודות</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors" href="#">השוואת רשתות</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors" href="#">מחשבון מאקרו</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors" href="#">תנאי שימוש</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors" href="#">פרטיות</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors" href="#">תמיכה ונגישות</a>
+</nav>
+</div>
+</footer>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('[data-path="dashboard"]').forEach(el => el.href = 'dashboard.html');
+    document.querySelectorAll('[data-path="cart"]').forEach(el => el.href = 'cart.html');
+    document.querySelectorAll('[data-path="recipes"]').forEach(el => el.href = 'recipe.html');
+    document.querySelectorAll('[data-path="onboarding"]').forEach(el => el.href = 'onboarding.html');
+
+    // Interactive 15-second Reel player (loops; play/pause + restart)
+    const REEL_LENGTH = 15;
+    const playBtn = document.getElementById('reel-play');
+    const replayBtn = document.getElementById('reel-replay');
+    const timeEl = document.getElementById('reel-time');
+    const progressBar = document.getElementById('reel-progress');
+    const playIcon = playBtn ? playBtn.querySelector('.material-symbols-outlined') : null;
+
+    let seconds = 4;
+    let reelInterval = null;
+
+    function renderReel() {
+        if (timeEl) timeEl.textContent = '00:' + String(seconds).padStart(2, '0');
+        if (progressBar) progressBar.style.width = (seconds / REEL_LENGTH * 100) + '%';
+    }
+    function playReel() {
+        if (reelInterval) return;
+        if (playIcon) playIcon.textContent = 'pause';
+        reelInterval = setInterval(() => {
+            seconds = seconds >= REEL_LENGTH ? 0 : seconds + 1;
+            renderReel();
+        }, 1000);
+    }
+    function pauseReel() {
+        clearInterval(reelInterval);
+        reelInterval = null;
+        if (playIcon) playIcon.textContent = 'play_arrow';
+    }
+    if (playBtn) playBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        reelInterval ? pauseReel() : playReel();
+    });
+    if (replayBtn) replayBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        seconds = 0;
+        renderReel();
+        playReel();
+    });
+    renderReel();
+    playReel();
+
+    renderRecipe();
+    initStepTimers();
+});
+
+// ---- Recipe view driven by ?dish= (assets/data.js) ----
+const RD = window.ShelfSenseData;
+const RS = window.ShelfSense;
+const FLAGSHIP = 'mex-chicken'; // the dish with full steps + video in this prototype
+const params = new URLSearchParams(location.search);
+const DISH_ID = RD && RD.DISHES[params.get('dish')] ? params.get('dish') : FLAGSHIP;
+const SLOT_ID = RD && RD.SLOTS[params.get('slot')] ? params.get('slot') : null;
+let portions = SLOT_ID ? RD.SLOTS[SLOT_ID].servings : (RD.DISHES[DISH_ID].type === 'anchor' ? 3 : 1);
+if (![1, 3, 5].includes(portions)) portions = 3;
+const escR = (s) => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+function servingCost(dishId, tier, store) {
+  return RD.DISHES[dishId].ing.reduce((sum, [pid, q]) => {
+    const p = RD.PRODUCTS[pid];
+    if (!q) return sum;
+    return sum + (q / p.pack) * RD.price(pid, RD.defaultBrandIndex(pid, tier), store);
+  }, 0);
+}
+
+function renderRecipe() {
+  if (!RD) return;
+  const d = RD.DISHES[DISH_ID];
+  const profile = RS.loadProfile();
+  const typeLabel = { anchor: 'ארוחת עוגן (Batch Cooking)', quick: 'ארוחה מהירה', breakfast: 'ארוחת בוקר מהירה', backup: 'ארוחת גיבוי מהמזווה' }[d.type];
+  document.title = 'ShelfSense — ' + d.name;
+  const pct = (v, t) => Math.min(100, Math.round(v / t * 100));
+  const card = (label, value, unit, color, bar) => `
+    <div class="bg-surface-container-lowest p-space-md rounded-xl border border-outline-variant/60 shadow-sm flex flex-col">
+      <span class="font-label-sm text-label-sm ${color} font-medium">${label}</span>
+      <div class="flex items-baseline gap-1 mt-1"><span class="font-numeric-stat text-2xl ${color} font-bold">${value}</span><span class="font-label-sm text-label-sm text-on-surface-variant">${unit}</span></div>
+      <div class="w-full bg-surface-container rounded-full h-1.5 mt-2 overflow-hidden"><div class="h-full rounded-full ${bar}" style="width:${pct(value, unit === 'קק״ל' ? profile.calories : (label.includes('חלבון') ? profile.protein : label.includes('פחמ') ? profile.carbs : profile.fat))}%"></div></div>
+    </div>`;
+  const rami = servingCost(DISH_ID, profile.tier, 'רמי לוי');
+  const shuf = servingCost(DISH_ID, profile.tier, 'שופרסל');
+  const notFlagship = DISH_ID !== FLAGSHIP;
+
+  document.getElementById('recipe-head').innerHTML = `
+    <div class="lg:col-span-8 flex flex-col gap-space-md">
+      <div class="flex flex-wrap items-center gap-2">
+        <a class="font-label-md text-label-md text-outline hover:text-primary" href="dashboard.html">תפריט שבועי</a>
+        <span class="material-symbols-outlined text-xs text-outline">chevron_left</span>
+        <span class="font-label-md text-label-md text-primary font-semibold">${SLOT_ID ? RD.SLOTS[SLOT_ID].label : typeLabel}</span>
+        <span class="bg-surface-container-high text-on-surface font-label-sm text-label-sm px-2 py-0.5 rounded-full">זמן הכנה: ${d.prep} דק׳</span>
+      </div>
+      <div>
+        <h1 class="font-headline-lg text-headline-lg md:font-display-lg md:text-display-lg text-on-surface tracking-tight mb-1">${escR(d.name)}</h1>
+        <p class="font-body-lg text-body-lg text-on-surface-variant">${escR(d.desc)}</p>
+      </div>
+      ${notFlagship ? `<div class="p-3 rounded-lg bg-secondary-fixed/40 text-on-surface font-body-sm text-body-sm flex items-start gap-2"><span class="material-symbols-outlined text-secondary">info</span><span>באב-הטיפוס, סרטון ה-Reel ושלבי ההכנה המפורטים קיימים רק למתכון הדגל. המצרכים, הכמויות והערכים התזונתיים כאן מדויקים למנה זו.</span></div>` : ''}
+      <span class="font-label-md text-label-md text-on-surface-variant">ערכים תזונתיים למנה (הפס = חלק מהיעד היומי שלך)</span>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-space-sm">
+        ${card('חלבון', d.protein, 'גרם', 'text-macro-protein', 'bg-macro-protein')}
+        ${card('קלוריות', d.kcal, 'קק״ל', 'text-on-surface', 'bg-primary')}
+        ${card('פחמימות', d.carbs, 'גרם', 'text-macro-carbs', 'bg-macro-carbs')}
+        ${card('שומן', d.fat, 'גרם', 'text-macro-fat', 'bg-macro-fat')}
+      </div>
+    </div>
+    <div class="lg:col-span-4 bg-surface-container-lowest rounded-xl border border-outline-variant/80 p-space-md shadow-sm flex flex-col gap-space-sm">
+      <span class="font-headline-sm text-headline-sm text-on-surface font-semibold">עלות משוערת למנה</span>
+      <div class="flex items-baseline gap-2"><span class="font-numeric-stat text-3xl text-primary font-bold">${RS.money(rami, 2)}</span><span class="font-body-md text-body-md text-on-surface-variant">פרופיל ${RS.TIERS[profile.tier].label}</span></div>
+      <div class="space-y-2 bg-surface-container-low p-3 rounded-lg">
+        <div class="flex items-center justify-between font-body-sm text-body-sm"><span class="text-on-surface font-medium">רמי לוי (${portions} מנות)</span><span class="font-semibold text-primary">${RS.money(rami * portions, 2)}</span></div>
+        <div class="flex items-center justify-between font-body-sm text-body-sm text-on-surface-variant"><span>שופרסל (${portions} מנות)</span><span>${RS.money(shuf * portions, 2)}</span></div>
+      </div>
+      <p class="font-label-sm text-label-sm text-on-surface-variant">עלות יחסית לפי כמות המוצר במנה, כולל מוצרי מזווה. מחירי אב-טיפוס.</p>
+    </div>`;
+
+  // Ingredients scaled to the selected portions
+  const row = (pid, q, fresh) => {
+    const p = RD.PRODUCTS[pid];
+    const amount = q ? RD.fmtAmount(pid, q * portions) : 'לפי הטעם';
+    return `<div class="flex items-center justify-between p-3 rounded-lg ${fresh ? 'border border-outline-variant/50' : 'bg-surface-container-low/40 border border-outline-variant/40'}">
+      <div class="flex items-center gap-3">
+        <span class="material-symbols-outlined ${fresh ? 'text-primary' : 'text-primary fill-icon'}">${fresh ? 'shopping_basket' : 'check_circle'}</span>
+        <span class="font-label-lg text-label-lg text-on-surface font-medium">${escR(p.name)}</span>
+      </div>
+      <span class="font-numeric-stat text-sm font-semibold ${fresh ? 'text-primary' : 'text-on-surface'}">${amount}</span>
+    </div>`;
+  };
+  document.getElementById('ing-fresh').innerHTML = d.ing.filter(([pid]) => RD.PRODUCTS[pid].cat === 'fresh').map(([pid, q]) => row(pid, q, true)).join('') || '<p class="font-body-sm text-body-sm text-on-surface-variant">אין מתכלים — כל הרכיבים מהמזווה.</p>';
+  document.getElementById('ing-pantry').innerHTML = d.ing.filter(([pid]) => RD.PRODUCTS[pid].cat === 'pantry').map(([pid, q]) => row(pid, q, false)).join('') || '<p class="font-body-sm text-body-sm text-on-surface-variant">אין מוצרי מזווה במנה זו.</p>';
+  document.querySelectorAll('.portion-btn').forEach(b => {
+    const on = Number(b.dataset.portions) === portions;
+    b.setAttribute('aria-checked', on ? 'true' : 'false');
+    b.className = 'portion-btn px-3 py-1.5 rounded-md font-label-md text-label-md transition-colors ' + (on ? 'bg-surface-container-lowest text-primary font-bold shadow-sm border border-outline-variant/40' : 'text-on-surface-variant hover:text-on-surface');
+  });
+
+  // Video + detailed steps exist only for the flagship dish; others get generic steps
+  document.getElementById('recipe-video').hidden = notFlagship;
+  if (notFlagship) {
+    const fresh = d.ing.filter(([pid]) => RD.PRODUCTS[pid].cat === 'fresh').map(([pid]) => RD.PRODUCTS[pid].name);
+    const steps = [
+      ['הכנת המצרכים', 'שוטפים, חותכים ומודדים: ' + (fresh.join(', ') || 'מוצרי המזווה') + '.', 5],
+      ['בישול', escR(d.desc), Math.max(3, d.prep - 8)],
+      [d.type === 'anchor' ? 'חלוקה לקופסאות' : 'הגשה', d.type === 'anchor' ? `מחלקים ל-${portions} קופסאות ומקררים — טרי עד 4 ימים.` : 'מרכיבים בצלחת ומגישים מיד.', 3]
+    ];
+    document.getElementById('steps-grid').className = 'grid grid-cols-1 md:grid-cols-3 gap-space-md';
+    document.getElementById('steps-grid').innerHTML = steps.map(([t, body, min], i) => `
+      <div class="bg-surface-container-low/40 rounded-xl border border-outline-variant/60 p-space-md flex flex-col justify-between">
+        <div><div class="flex items-center justify-between mb-3"><span class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-label-lg">${i + 1}</span>
+        <span class="font-label-sm text-label-sm bg-surface-container text-on-surface-variant px-2 py-0.5 rounded">${min} דק׳</span></div>
+        <h4 class="font-headline-sm text-headline-sm text-on-surface font-semibold mb-2">${t}</h4>
+        <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">${body}</p></div>
+      </div>`).join('');
+    initStepTimers();
+  }
+}
+
+// Per-step countdown timers (reads the "N דק׳" label of each step card)
+let activeTimer = null;
+function initStepTimers() {
+  document.querySelectorAll('#steps-grid > div').forEach(card => {
+    if (card.querySelector('.step-timer')) return;
+    const label = Array.from(card.querySelectorAll('span')).find(s => /\d+\s*דק/.test(s.textContent));
+    if (!label) return;
+    const minutes = parseInt(label.textContent.match(/\d+/)[0], 10);
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'step-timer mt-3 w-full flex items-center justify-center gap-1 py-1.5 rounded-lg bg-primary/10 text-primary font-label-md text-label-md hover:bg-primary/20 transition-colors';
+    btn.style.fontVariantNumeric = 'tabular-nums';
+    btn.innerHTML = `<span class="material-symbols-outlined text-base">timer</span><span>הפעל טיימר ${minutes}:00</span>`;
+    btn.addEventListener('click', () => toggleTimer(btn, minutes));
+    card.appendChild(btn);
+  });
+}
+function toggleTimer(btn, minutes) {
+  if (activeTimer && activeTimer.btn === btn) { clearInterval(activeTimer.id); resetTimerBtn(btn, minutes); activeTimer = null; return; }
+  if (activeTimer) { clearInterval(activeTimer.id); resetTimerBtn(activeTimer.btn, activeTimer.minutes); }
+  let left = minutes * 60;
+  const tick = () => {
+    const mm = String(Math.floor(left / 60)).padStart(2, '0'), ss = String(left % 60).padStart(2, '0');
+    btn.innerHTML = left > 0
+      ? `<span class="material-symbols-outlined text-base">stop_circle</span><span>${mm}:${ss} — עצור</span>`
+      : `<span class="material-symbols-outlined text-base">notifications_active</span><span>השלב הסתיים!</span>`;
+    if (left <= 0) { clearInterval(activeTimer.id); activeTimer = null; btn.classList.add('bg-tertiary', 'text-on-tertiary'); return; }
+    left--;
+  };
+  activeTimer = { btn, minutes, id: setInterval(tick, 1000) };
+  tick();
+}
+function resetTimerBtn(btn, minutes) {
+  btn.classList.remove('bg-tertiary', 'text-on-tertiary');
+  btn.innerHTML = `<span class="material-symbols-outlined text-base">timer</span><span>הפעל טיימר ${minutes}:00</span>`;
+}
+
+document.addEventListener('click', (e) => {
+  const b = e.target.closest('.portion-btn');
+  if (!b) return;
+  portions = Number(b.dataset.portions);
+  renderRecipe();
+});
+</script></body></html>
+

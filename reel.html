@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl" class="h-full bg-slate-950 text-slate-100">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ShelfSense — Reel: קערת בקר טחון ואורז</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Rubik', sans-serif;
+      touch-action: manipulation;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .font-outfit {
+      font-family: 'Rubik', sans-serif; /* project rule: Rubik only */
+    }
+    @keyframes steamFloat {
+      0%, 100% { transform: translateY(0) scale(1); opacity: 0.25; }
+      50% { transform: translateY(-16px) scale(1.15); opacity: 0.55; }
+    }
+    .animate-steam {
+      animation: steamFloat 3.5s ease-in-out infinite;
+    }
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.3; transform: scale(1); }
+      50% { opacity: 0.65; transform: scale(1.04); }
+    }
+    .animate-pulse-glow {
+      animation: pulseGlow 2.5s infinite;
+    }
+    @keyframes sizzlePop {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02) rotate(0.2deg); }
+    }
+    .sizzle-active {
+      animation: sizzlePop 0.2s infinite;
+    }
+    /* Smooth progress transition when running */
+    .progress-bar-fill {
+      transition: width 0.1s linear;
+    }
+    /* Hide scrollbar */
+    ::-webkit-scrollbar { display: none; }
+  </style>
+</head>
+<body class="h-full w-full flex items-center justify-center bg-neutral-950 p-0 sm:p-4 overflow-hidden select-none">
+
+  <!-- Mobile 9:16 Video Container Mockup -->
+  <div class="relative w-full max-w-[420px] h-full sm:h-[860px] sm:max-h-[95vh] sm:rounded-[36px] overflow-hidden shadow-2xl bg-black border border-slate-800 flex flex-col justify-between" id="videoWrapper">
+
+    <!-- SCENE MEDIA LAYERS (9:16 Background Images with Zoom & Motion) -->
+
+    <!-- SCENE 1: 0 - 3s (Macro Hero Shot) -->
+    <div id="scene1" class="absolute inset-0 z-0 transition-opacity duration-500 opacity-100">
+      <img src="assets/img/reel-beef-bowl.jpg" alt="High-Protein Ground Beef & Rice Bowl Hero" class="w-full h-full object-cover transform scale-105 transition-transform duration-[4000ms] ease-out" id="imgScene1">
+      <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/40"></div>
+      <!-- Subtle steam highlight overlay -->
+      <div class="absolute top-[18%] left-1/2 -translate-x-1/2 w-48 h-48 bg-emerald-400/10 rounded-full blur-3xl pointer-events-none animate-steam"></div>
+    </div>
+
+    <!-- SCENE 2: 3 - 10s (Prep & Sizzle Action) -->
+    <div id="scene2" class="absolute inset-0 z-0 transition-opacity duration-500 opacity-0 pointer-events-none">
+      <img src="assets/img/reel-beef-sizzle.jpg" alt="Dynamic Sizzling Ground Beef and Green Beans" class="w-full h-full object-cover transform scale-100 transition-transform duration-7000 ease-in-out" id="imgScene2">
+      <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/40"></div>
+      <div class="absolute top-[30%] left-[40%] w-56 h-56 bg-amber-500/15 rounded-full blur-3xl pointer-events-none animate-pulse-glow"></div>
+    </div>
+
+    <!-- SCENE 3: 10 - 15s (Batch Meal Prep 3 Containers & Macros) -->
+    <div id="scene3" class="absolute inset-0 z-0 transition-opacity duration-500 opacity-0 pointer-events-none">
+      <img src="assets/img/reel-containers.jpg" alt="3 Meal Prep Containers Ready" class="w-full h-full object-cover transform scale-105 transition-transform duration-[6000ms] ease-out" id="imgScene3">
+      <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/50"></div>
+      <div class="absolute bottom-[20%] left-1/2 -translate-x-1/2 w-72 h-44 bg-teal-500/20 rounded-full blur-3xl pointer-events-none"></div>
+    </div>
+
+    <!-- TOP HEADER / REELS HUD OVERLAY -->
+    <header class="relative z-20 pt-4 px-4 flex items-center justify-between pointer-events-auto">
+      <!-- App Brand & Category -->
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-full bg-teal-600/90 border border-teal-400/40 p-0.5 flex items-center justify-center shadow-lg backdrop-blur-md">
+          <span class="text-white text-base">⚡</span>
+        </div>
+        <div class="flex flex-col text-right">
+          <div class="flex items-center gap-1.5">
+            <span class="font-bold text-sm tracking-wide text-white drop-shadow">ShelfSense Reel</span>
+            <span class="bg-teal-500/30 text-teal-300 text-[10px] font-semibold px-2 py-0.5 rounded-full border border-teal-400/30 backdrop-blur-sm">Batch Meal Prep</span>
+          </div>
+          <span class="text-[11px] text-slate-300 font-medium drop-shadow flex items-center gap-1">
+            <span>ארוחת עוגן</span> • <span>3 מנות שבועיות</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Action pill (Timer & Sound) -->
+      <div class="flex items-center gap-2">
+        <div class="bg-black/55 backdrop-blur-md border border-white/15 px-2.5 py-1 rounded-full text-xs font-mono font-semibold text-slate-200 flex items-center gap-1.5 shadow">
+          <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+          <span id="timeCounter">00:00 / 00:15</span>
+        </div>
+        <button id="btnSoundToggle" class="w-8 h-8 rounded-full bg-black/50 backdrop-blur-md border border-white/20 flex items-center justify-center text-slate-200 hover:text-white transition">
+          <svg id="iconSoundOn" class="w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path></svg>
+          <svg id="iconSoundMute" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z m12 0l4-4m0 4l-4-4"></path></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- RIGHT ACTION SIDEBAR (TikTok / Reels Style Icons) -->
+    <aside class="absolute left-3 bottom-28 z-20 flex flex-col items-center gap-4 text-white">
+      <!-- Macro Highlight Badge Button -->
+      <div class="group flex flex-col items-center">
+        <button class="w-11 h-11 rounded-full bg-black/60 backdrop-blur-md border border-teal-400/40 flex items-center justify-center text-teal-300 shadow-lg active:scale-90 transition">
+          <span class="font-outfit font-black text-sm">45g</span>
+        </button>
+        <span class="text-[10px] text-slate-200 mt-1 font-semibold">חלבון</span>
+      </div>
+
+      <!-- Like / Save / Export -->
+      <div class="flex flex-col items-center">
+        <button id="likeBtn" class="w-11 h-11 rounded-full bg-black/50 backdrop-blur-md border border-white/20 flex items-center justify-center text-rose-400 hover:text-rose-300 shadow active:scale-90 transition">
+          <svg class="w-6 h-6 fill-rose-500" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        </button>
+        <span class="text-[10px] text-slate-200 mt-1 font-semibold">14.8K</span>
+      </div>
+
+      <div class="flex flex-col items-center">
+        <button class="w-11 h-11 rounded-full bg-black/50 backdrop-blur-md border border-white/20 flex items-center justify-center text-white shadow active:scale-90 transition">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+        </button>
+        <span class="text-[10px] text-slate-200 mt-1 font-semibold">324</span>
+      </div>
+
+      <div class="flex flex-col items-center">
+        <button class="w-11 h-11 rounded-full bg-emerald-600/80 backdrop-blur-md border border-emerald-400/50 flex items-center justify-center text-white shadow-lg active:scale-90 transition" title="הוסף מצרכים לסל ShelfSense">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+        </button>
+        <span class="text-[10px] text-emerald-300 mt-1 font-bold">לסל</span>
+      </div>
+    </aside>
+
+    <!-- CENTER DYNAMIC SCENE OVERLAYS (Changes every cut according to timeline) -->
+    <div class="relative z-10 px-5 flex-1 flex flex-col justify-end pb-8 pointer-events-none">
+
+      <!-- BADGE 1: SCENE 1 (0-3s) HERO TEXT -->
+      <div id="overlayScene1" class="transition-all duration-300 transform translate-y-0 opacity-100 flex flex-col gap-2">
+        <div class="inline-flex items-center gap-1.5 self-start bg-amber-500/25 border border-amber-400/40 text-amber-300 text-xs px-2.5 py-1 rounded-full font-bold backdrop-blur-md">
+          <span>🔥 ארוחת עוגן שבועית</span>
+        </div>
+        <h1 class="text-2xl font-black text-white leading-tight drop-shadow-lg">
+          קערת בקר טחון & אורז לבן
+        </h1>
+        <p class="text-xs text-slate-200 drop-shadow line-clamp-2 font-medium">
+          בישול מרוכז פעם אחת — 3 ארוחות עשירות בחלבון מסודרות לשבוע ללא ירק עלי/כוסברה.
+        </p>
+
+        <!-- Macro Quick Pills -->
+        <div class="flex items-center gap-2 mt-1">
+          <span class="bg-black/60 border border-teal-500/50 text-teal-300 font-outfit font-bold text-xs px-2.5 py-1 rounded-lg backdrop-blur-md">
+            45g חלבון
+          </span>
+          <span class="bg-black/60 border border-white/20 text-slate-200 font-outfit font-semibold text-xs px-2.5 py-1 rounded-lg backdrop-blur-md">
+            550 קלוריות
+          </span>
+          <span class="bg-black/60 border border-emerald-500/40 text-emerald-300 text-xs px-2 py-1 rounded-lg font-semibold backdrop-blur-md">
+            15 דק' עבודה
+          </span>
+        </div>
+      </div>
+
+      <!-- BADGE 2: SCENE 2 (3-10s) RAPID PREP STEPS CUTS -->
+      <div id="overlayScene2" class="transition-all duration-300 transform translate-y-4 opacity-0 hidden flex flex-col gap-2.5">
+        <div class="inline-flex items-center gap-2 self-start bg-rose-500/30 border border-rose-400/40 text-rose-200 text-xs px-3 py-1 rounded-full font-bold backdrop-blur-md">
+          <span class="w-2 h-2 rounded-full bg-rose-400 animate-ping"></span>
+          <span>צריבה ישירה במחבת נירוסטה קרה</span>
+        </div>
+
+        <div class="bg-black/75 backdrop-blur-md p-3.5 rounded-2xl border border-white/15 shadow-xl text-right">
+          <div class="flex items-center justify-between text-xs text-slate-300 mb-2 border-b border-white/10 pb-1.5">
+            <span class="font-bold text-amber-400 flex items-center gap-1">
+              <span>🍳</span> שלב ההכנה המהיר
+            </span>
+            <span class="text-[11px] font-mono text-slate-400">Jump Cut 03-10s</span>
+          </div>
+
+          <div class="space-y-1.5">
+            <div class="flex items-center gap-2 text-xs font-semibold text-slate-100">
+              <span class="w-5 h-5 rounded-full bg-teal-500/30 text-teal-300 flex items-center justify-center text-[10px] font-bold">1</span>
+              <span>הנחת בקר טחון במחבת קרה להמסת שומן טבעית וקרמול פריך</span>
+            </div>
+            <div class="flex items-center gap-2 text-xs font-semibold text-slate-100">
+              <span class="w-5 h-5 rounded-full bg-teal-500/30 text-teal-300 flex items-center justify-center text-[10px] font-bold">2</span>
+              <span>הוספת שעועית ירוקה טרייה (ללא כוסברה/פטרוזיליה)</span>
+            </div>
+            <div class="flex items-center gap-2 text-xs font-semibold text-slate-100">
+              <span class="w-5 h-5 rounded-full bg-teal-500/30 text-teal-300 flex items-center justify-center text-[10px] font-bold">3</span>
+              <span>שילוב עם אורז לבן מבושל ורוטב סויה-שום מרוכז</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BADGE 3: SCENE 3 (10-15s) BATCH COOKING & MACRO OVERLAY -->
+      <div id="overlayScene3" class="transition-all duration-300 transform translate-y-4 opacity-0 hidden flex flex-col gap-3">
+        <!-- Cook Once Eat 3 Times Big Banner -->
+        <div class="bg-gradient-to-r from-teal-500/90 to-emerald-600/90 text-white px-3.5 py-1.5 rounded-xl font-bold text-xs flex items-center justify-between shadow-lg">
+          <span class="flex items-center gap-1.5 text-sm font-black">
+            <span>📦</span> בָּאטְץ' מוכן: בשל פעם אחת, אכול פי 3!
+          </span>
+          <span class="bg-white/20 text-[10px] px-2 py-0.5 rounded-md font-mono">3 מנות שוות</span>
+        </div>
+
+        <!-- Full Graphic Macro Overlay -->
+        <div class="bg-black/85 backdrop-blur-xl p-4 rounded-3xl border border-teal-500/40 shadow-2xl">
+          <div class="text-center mb-3">
+            <span class="text-[11px] uppercase tracking-wider font-extrabold text-teal-400">ערכים תזונתיים מדויקים למנה אחת</span>
+            <div class="text-xl font-black text-white mt-0.5 font-outfit">HIGH-PROTEIN BOWL</div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2.5">
+            <!-- Protein Card -->
+            <div class="bg-teal-950/60 border border-teal-500/50 rounded-2xl p-2.5 text-center flex flex-col items-center">
+              <span class="text-[10px] font-bold text-teal-300 uppercase">חלבון</span>
+              <span class="text-2xl font-black text-white font-outfit tracking-tight">45g</span>
+              <span class="text-[9px] text-teal-400/80">33% מסך הקלוריות</span>
+            </div>
+
+            <!-- Calories Card -->
+            <div class="bg-slate-900/80 border border-slate-700/60 rounded-2xl p-2.5 text-center flex flex-col items-center">
+              <span class="text-[10px] font-bold text-slate-300 uppercase">קלוריות</span>
+              <span class="text-2xl font-black text-amber-400 font-outfit tracking-tight">550</span>
+              <span class="text-[9px] text-slate-400">מדויק ליעד חיטוב</span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2 mt-2 pt-2 border-t border-white/10 text-center text-[10px] text-slate-300 font-medium">
+            <div>פחמימות: <span class="font-bold text-white font-outfit">52g</span> (אורז לבן)</div>
+            <div>שומן: <span class="font-bold text-white font-outfit">18g</span> (בקר איכותי)</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- BOTTOM VIDEO CONTROLS & TIMELINE SCRUBBER -->
+    <footer class="relative z-30 bg-gradient-to-t from-black via-black/90 to-transparent p-4 pt-2 pointer-events-auto">
+
+      <!-- Scrub Timeline Bar with 3 scene split ticks -->
+      <div class="relative w-full cursor-pointer py-2 group" id="scrubberTrack">
+        <!-- Bar background -->
+        <div class="h-1.5 w-full bg-white/20 rounded-full overflow-hidden relative backdrop-blur-sm">
+          <!-- Active fill -->
+          <div id="progressBar" class="h-full bg-gradient-to-r from-teal-400 via-emerald-400 to-amber-400 rounded-full progress-bar-fill w-0"></div>
+        </div>
+
+        <!-- 3 Scene Markers / Ticks (0s, 3s, 10s, 15s) -->
+        <div class="absolute top-2 inset-x-0 flex justify-between pointer-events-none px-0.5">
+          <div class="w-0.5 h-1.5 bg-black/60"></div>
+          <!-- 3s marker (20% of 15s) -->
+          <div class="w-1 h-2 -top-0.5 bg-white/70 rounded-full relative" style="left: 20%;" title="3s: חיתוך להכנה"></div>
+          <!-- 10s marker (66.6% of 15s) -->
+          <div class="w-1 h-2 -top-0.5 bg-white/70 rounded-full relative" style="left: 66.6%;" title="10s: חיתוך לקופסאות"></div>
+          <div class="w-0.5 h-1.5 bg-black/60"></div>
+        </div>
+      </div>
+
+      <!-- Playback Controls, Scene Jumpers, and CTA -->
+      <div class="flex items-center justify-between gap-3 mt-1">
+        <!-- Play / Pause Button -->
+        <button id="btnPlayPause" class="w-10 h-10 rounded-full bg-teal-500 hover:bg-teal-400 text-slate-950 flex items-center justify-center font-bold shadow-lg transition active:scale-95">
+          <!-- Pause Icon (Default playing) -->
+          <svg id="iconPause" class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+          <!-- Play Icon -->
+          <svg id="iconPlay" class="w-5 h-5 fill-current hidden ml-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+
+        <!-- Scene Selector Jump Pills -->
+        <div class="flex items-center gap-1.5 bg-white/10 p-1 rounded-xl backdrop-blur-md border border-white/10 text-xs">
+          <button data-jump="0" class="scene-btn px-2.5 py-1 rounded-lg font-bold text-[11px] transition bg-white text-slate-950 shadow" id="btnCut1">0-3s הירו</button>
+          <button data-jump="3" class="scene-btn px-2.5 py-1 rounded-lg font-medium text-[11px] text-slate-300 hover:text-white transition" id="btnCut2">3-10s הכנה</button>
+          <button data-jump="10" class="scene-btn px-2.5 py-1 rounded-lg font-medium text-[11px] text-slate-300 hover:text-white transition" id="btnCut3">10-15s מאקרו</button>
+        </div>
+
+        <!-- ShelfSense Recipe Action -->
+        <a href="recipe.html" aria-label="למתכון המלא" class="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-teal-300 border border-teal-500/30 flex items-center justify-center transition" title="מתכון מלא">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+        </a>
+      </div>
+
+    </footer>
+
+    <!-- CENTRAL TAP TO PAUSE/PLAY FEEDBACK OVERLAY -->
+    <div id="tapPlayFeedback" class="absolute inset-0 z-10 flex items-center justify-center pointer-events-none opacity-0 transition-opacity duration-200">
+      <div class="w-20 h-20 rounded-full bg-black/60 backdrop-blur-md border border-white/20 flex items-center justify-center text-white">
+        <svg id="feedbackIcon" class="w-10 h-10 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SCRIPT FOR 15-SECOND REELS PLAYER SIMULATION WITH JUMP CUTS -->
+  <script>
+    (function() {
+      const TOTAL_DURATION = 15.0; // 15 seconds
+      let currentTime = 0.0;
+      let isPlaying = true;
+      let isMuted = true;
+      let lastTimestamp = null;
+
+      // DOM Elements
+      const progressBar = document.getElementById('progressBar');
+      const timeCounter = document.getElementById('timeCounter');
+      const scrubberTrack = document.getElementById('scrubberTrack');
+      const btnPlayPause = document.getElementById('btnPlayPause');
+      const iconPlay = document.getElementById('iconPlay');
+      const iconPause = document.getElementById('iconPause');
+      const tapPlayFeedback = document.getElementById('tapPlayFeedback');
+      const videoWrapper = document.getElementById('videoWrapper');
+
+      const scene1 = document.getElementById('scene1');
+      const scene2 = document.getElementById('scene2');
+      const scene3 = document.getElementById('scene3');
+
+      const imgScene1 = document.getElementById('imgScene1');
+      const imgScene2 = document.getElementById('imgScene2');
+      const imgScene3 = document.getElementById('imgScene3');
+
+      const overlayScene1 = document.getElementById('overlayScene1');
+      const overlayScene2 = document.getElementById('overlayScene2');
+      const overlayScene3 = document.getElementById('overlayScene3');
+
+      const btnCut1 = document.getElementById('btnCut1');
+      const btnCut2 = document.getElementById('btnCut2');
+      const btnCut3 = document.getElementById('btnCut3');
+
+      const btnSoundToggle = document.getElementById('btnSoundToggle');
+      const iconSoundOn = document.getElementById('iconSoundOn');
+      const iconSoundMute = document.getElementById('iconSoundMute');
+      const likeBtn = document.getElementById('likeBtn');
+
+      // Heart toggle
+      likeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        likeBtn.classList.toggle('scale-125');
+        setTimeout(() => likeBtn.classList.remove('scale-125'), 200);
+      });
+
+      // Sound toggle
+      btnSoundToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        isMuted = !isMuted;
+        if (isMuted) {
+          iconSoundMute.classList.remove('hidden');
+          iconSoundOn.classList.add('hidden');
+        } else {
+          iconSoundMute.classList.add('hidden');
+          iconSoundOn.classList.remove('hidden');
+        }
+      });
+
+      // Scene Cut Jump Buttons
+      const jumpButtons = [
+        { btn: btnCut1, time: 0 },
+        { btn: btnCut2, time: 3.01 },
+        { btn: btnCut3, time: 10.01 }
+      ];
+
+      jumpButtons.forEach(item => {
+        item.btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          currentTime = item.time;
+          updateScene(currentTime);
+        });
+      });
+
+      // Scrubber Seek Click
+      scrubberTrack.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const rect = scrubberTrack.getBoundingClientRect();
+        // Since RTL / LTR: click position ratio
+        const clickX = e.clientX - rect.left;
+        const ratio = Math.max(0, Math.min(1, clickX / rect.width));
+        currentTime = ratio * TOTAL_DURATION;
+        updateScene(currentTime);
+      });
+
+      // Tap video to toggle play/pause
+      videoWrapper.addEventListener('click', (e) => {
+        if (e.target.closest('button') || e.target.closest('#scrubberTrack')) return;
+        togglePlayPause();
+      });
+
+      btnPlayPause.addEventListener('click', (e) => {
+        e.stopPropagation();
+        togglePlayPause();
+      });
+
+      function togglePlayPause() {
+        isPlaying = !isPlaying;
+        if (isPlaying) {
+          iconPlay.classList.add('hidden');
+          iconPause.classList.remove('hidden');
+          lastTimestamp = performance.now();
+          showFeedback('play');
+        } else {
+          iconPlay.classList.remove('hidden');
+          iconPause.classList.add('hidden');
+          showFeedback('pause');
+        }
+      }
+
+      function showFeedback(type) {
+        tapPlayFeedback.style.opacity = '1';
+        setTimeout(() => {
+          tapPlayFeedback.style.opacity = '0';
+        }, 350);
+      }
+
+      // Dynamic Scene Switching Logic
+      function updateScene(t) {
+        const progressPercent = (t / TOTAL_DURATION) * 100;
+        progressBar.style.width = progressPercent + '%';
+
+        const seconds = Math.floor(t);
+        const secFormatted = seconds < 10 ? '0' + seconds : seconds;
+        timeCounter.textContent = `00:${secFormatted} / 00:15`;
+
+        // Cut 1: 0 - 3s (Hero Shot)
+        if (t < 3.0) {
+          // Scenes
+          scene1.classList.remove('opacity-0', 'pointer-events-none');
+          scene1.classList.add('opacity-100');
+          scene2.classList.remove('opacity-100');
+          scene2.classList.add('opacity-0', 'pointer-events-none');
+          scene3.classList.remove('opacity-100');
+          scene3.classList.add('opacity-0', 'pointer-events-none');
+
+          // Overlays
+          overlayScene1.classList.remove('hidden', 'opacity-0', 'translate-y-4');
+          overlayScene1.classList.add('opacity-100', 'translate-y-0');
+
+          overlayScene2.classList.add('hidden', 'opacity-0', 'translate-y-4');
+          overlayScene3.classList.add('hidden', 'opacity-0', 'translate-y-4');
+
+          // Highlight Cut Buttons
+          setActiveButton(btnCut1);
+        }
+        // Cut 2: 3 - 10s (Prep Steps Jump Cuts & Sizzle)
+        else if (t >= 3.0 && t < 10.0) {
+          scene1.classList.remove('opacity-100');
+          scene1.classList.add('opacity-0', 'pointer-events-none');
+
+          scene2.classList.remove('opacity-0', 'pointer-events-none');
+          scene2.classList.add('opacity-100');
+
+          scene3.classList.remove('opacity-100');
+          scene3.classList.add('opacity-0', 'pointer-events-none');
+
+          overlayScene1.classList.add('hidden', 'opacity-0', 'translate-y-4');
+
+          overlayScene2.classList.remove('hidden');
+          // slight tick for entrance
+          setTimeout(() => {
+            overlayScene2.classList.remove('opacity-0', 'translate-y-4');
+            overlayScene2.classList.add('opacity-100', 'translate-y-0');
+          }, 10);
+
+          overlayScene3.classList.add('hidden', 'opacity-0', 'translate-y-4');
+
+          setActiveButton(btnCut2);
+        }
+        // Cut 3: 10 - 15s (Batch Packaging & High Macro Graphic Overlay)
+        else {
+          scene1.classList.remove('opacity-100');
+          scene1.classList.add('opacity-0', 'pointer-events-none');
+
+          scene2.classList.remove('opacity-100');
+          scene2.classList.add('opacity-0', 'pointer-events-none');
+
+          scene3.classList.remove('opacity-0', 'pointer-events-none');
+          scene3.classList.add('opacity-100');
+
+          overlayScene1.classList.add('hidden', 'opacity-0', 'translate-y-4');
+          overlayScene2.classList.add('hidden', 'opacity-0', 'translate-y-4');
+
+          overlayScene3.classList.remove('hidden');
+          setTimeout(() => {
+            overlayScene3.classList.remove('opacity-0', 'translate-y-4');
+            overlayScene3.classList.add('opacity-100', 'translate-y-0');
+          }, 10);
+
+          setActiveButton(btnCut3);
+        }
+      }
+
+      function setActiveButton(activeBtn) {
+        [btnCut1, btnCut2, btnCut3].forEach(b => {
+          if (b === activeBtn) {
+            b.className = "scene-btn px-2.5 py-1 rounded-lg font-bold text-[11px] transition bg-white text-slate-950 shadow";
+          } else {
+            b.className = "scene-btn px-2.5 py-1 rounded-lg font-medium text-[11px] text-slate-300 hover:text-white transition";
+          }
+        });
+      }
+
+      // Animation Loop for 15s continuous reel playback
+      function loop(timestamp) {
+        if (!lastTimestamp) lastTimestamp = timestamp;
+        const delta = (timestamp - lastTimestamp) / 1000;
+        lastTimestamp = timestamp;
+
+        if (isPlaying) {
+          currentTime += delta;
+          if (currentTime >= TOTAL_DURATION) {
+            currentTime = 0; // Auto loop seamlessly
+          }
+          updateScene(currentTime);
+        }
+
+        requestAnimationFrame(loop);
+      }
+
+      // Start playback loop
+      requestAnimationFrame(loop);
+
+    })();
+  </script>
+</body>
+</html>
+
