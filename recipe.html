@@ -455,7 +455,8 @@ function renderRecipe() {
         <h1 class="font-headline-lg text-headline-lg md:font-display-lg md:text-display-lg text-on-surface tracking-tight mb-1">${escR(d.name)}</h1>
         <p class="font-body-lg text-body-lg text-on-surface-variant">${escR(d.desc)}</p>
       </div>
-      ${notFlagship ? `<div class="p-3 rounded-lg bg-secondary-fixed/40 text-on-surface font-body-sm text-body-sm flex items-start gap-2"><span class="material-symbols-outlined text-secondary">info</span><span>באב-הטיפוס, סרטון ה-Reel ושלבי ההכנה המפורטים קיימים רק למתכון הדגל. המצרכים, הכמויות והערכים התזונתיים כאן מדויקים למנה זו.</span></div>` : ''}
+      ${notFlagship && d.library ? `<a class="p-3 rounded-lg bg-primary-fixed text-on-primary-fixed font-body-sm text-body-sm flex items-start gap-2 hover:bg-primary-fixed-dim" href="low-calorie-recipes.html"><span class="material-symbols-outlined">menu_book</span><span>מתכון מספריית המתכונים דלי הקלוריות. כאן מוצגת המנה המלאה לתפריט (עם ${escR(d.side)}). שלבי ההכנה המפורטים נמצאים <strong class="underline">בספריית המתכונים</strong>.</span></a>`
+        : notFlagship ? `<div class="p-3 rounded-lg bg-secondary-fixed/40 text-on-surface font-body-sm text-body-sm flex items-start gap-2"><span class="material-symbols-outlined text-secondary">info</span><span>באב-הטיפוס, סרטון ה-Reel ושלבי ההכנה המפורטים קיימים רק למתכון הדגל. המצרכים, הכמויות והערכים התזונתיים כאן מדויקים למנה זו.</span></div>` : ''}
       <span class="font-label-md text-label-md text-on-surface-variant">ערכים תזונתיים למנה (הפס = חלק מהיעד היומי שלך)</span>
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-space-sm">
         ${card('חלבון', d.protein, 'גרם', 'text-macro-protein', 'bg-macro-protein')}

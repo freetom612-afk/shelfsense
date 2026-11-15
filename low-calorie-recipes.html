@@ -46,6 +46,7 @@
     </div>
     <h1 class="font-headline-lg text-headline-lg md:font-display-lg md:text-display-lg text-on-surface tracking-tight">10 מתכונים דלי קלוריות</h1>
     <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">ארוחות עשירות בחלבון שמתאימות לשיטת הלגו: מבשלים פעם אחת, מחלקים לקופסאות ונשארים בטווח הקלורי. הכמויות מתעדכנות לפי מספר המנות, והמצרכים מפוצלים למתכלים (נכנסים לסל) ולמזווה (קיים בבית).</p>
+    <p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">כל המתכונים זמינים גם בתפריט השבועי, תחת "החלף מנה". שם הם מוגשים כמנה מלאה (מנה גדולה יותר או עם תוספת), כדי לעמוד ביעד הקלורי והחלבוני של הארוחה.</p>
   </section>
 
   <!-- Filters -->
@@ -252,6 +253,24 @@
     }).join('');
   }
 
+  // The full-meal version of each recipe that lives in the weekly menu engine (assets/data.js)
+  function menuVersion(r) {
+    const D = window.ShelfSenseData;
+    const d = D && D.DISHES[r.id];
+    if (!d) return '';
+    const slot = Object.keys(D.SLOTS).find(s => D.SLOTS[s].type === d.type &&
+      Math.abs((d.kcal - D.SLOTS[s].target.kcal) / D.SLOTS[s].target.kcal) <= D.KCAL_TOL &&
+      Math.abs((d.protein - D.SLOTS[s].target.protein) / D.SLOTS[s].target.protein) <= D.PROTEIN_TOL);
+    return `<a href="recipe.html?dish=${r.id}${slot ? '&slot=' + slot : ''}" class="flex items-center gap-space-sm p-space-sm rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors">
+      <span class="material-symbols-outlined text-primary text-[22px] shrink-0">calendar_view_week</span>
+      <span class="flex-1 min-w-0 font-body-sm text-body-sm text-on-surface-variant">
+        <span class="block font-label-lg text-label-lg text-on-surface">בתפריט השבועי${slot ? ': ' + D.SLOTS[slot].label : ''}</span>
+        מנה מלאה ${d.kcal} קק״ל • ${d.protein}ג חלבון, עם ${esc(d.side)}. זמינה ב"החלף מנה".
+      </span>
+      <span class="material-symbols-outlined text-on-surface-variant text-[18px] shrink-0">chevron_left</span>
+    </a>`;
+  }
+
   function card(r) {
     const n = portions[r.id] || 2;
     const isOpen = open.has(r.id);
@@ -269,6 +288,7 @@
       </div>
       <p class="font-body-md text-body-md text-on-surface-variant">${esc(r.desc)}</p>
       ${macroPills(r)}
+      ${menuVersion(r)}
       <button type="button" data-toggle="${r.id}" aria-expanded="${isOpen}" class="mt-1 w-full h-10 rounded-lg font-label-lg text-label-lg flex items-center justify-center gap-1 transition-colors ${isOpen ? 'bg-surface-container text-on-surface' : 'bg-primary text-on-primary hover:bg-surface-tint'}">
         <span>${isOpen ? 'סגור מתכון' : 'למתכון המלא'}</span><span class="material-symbols-outlined text-[18px]">${isOpen ? 'expand_less' : 'expand_more'}</span>
       </button>

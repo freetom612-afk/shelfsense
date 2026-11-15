@@ -27,6 +27,8 @@
     'entrecote':      P('סטייק אנטריקוט', 'fresh', 'g', 500, '500 ג׳', [B('טירת צבי', 89.90), B('אנטריקוט מיושן 21 יום', 119.90)], { group: 'בשר ודגים', shuf: 1.04 }),
     'salmon':         P('פילה סלמון נורבגי טרי', 'fresh', 'g', 500, '500 ג׳', [B('דגי הים', 64.90), B('סלמון פרימיום', 79.90)], { group: 'בשר ודגים' }),
     'frozen-fish':    P('פילה מושט קפוא', 'fresh', 'g', 800, '800 ג׳', [B('מותג פרטי רמי לוי', 34.90, true), B('דגי עדן', 42.90)], { group: 'בשר ודגים' }),
+    'tilapia':        P('פילה אמנון טרי', 'fresh', 'g', 500, '500 ג׳', [B('מותג פרטי רמי לוי', 29.90, true), B('דגי עדן', 36.90)], { group: 'בשר ודגים' }),
+    'ground-turkey':  P('הודו טחון', 'fresh', 'g', 500, '500 ג׳', [B('מותג פרטי רמי לוי', 24.90, true), B('מאמא עוף', 29.90)], { group: 'בשר ודגים' }),
     // Dairy, eggs, tofu
     'eggs':           P('ביצים L', 'fresh', 'unit', 12, '12 יח׳', [B('מותג פרטי רמי לוי', 12.90, true), B('ביצי חופש גליל', 18.90), B('ביצים אורגניות', 26.90)], { group: 'חלב וביצים' }),
     'cottage':        P('קוטג׳ 5%', 'fresh', 'g', 250, '250 ג׳', [B('מותג פרטי רמי לוי', 5.40, true), B('תנובה', 6.90)], { group: 'חלב וביצים' }),
@@ -46,6 +48,16 @@
     'leafy':          P('עלי בייבי / חסה', 'fresh', 'g', 250, '250 ג׳', [B('מותג פרטי רמי לוי', 7.90, true), B('עלה עלה', 9.90)], { group: 'ירקות ופירות' }),
     'avocado':        P('אבוקדו', 'fresh', 'unit', 4, '4 יח׳', [B('מארז', 12.90), B('האס מובחר', 16.90)], { group: 'ירקות ופירות' }),
     'banana':         P('בננות', 'fresh', 'g', 1000, '1 ק״ג', [B('תפזורת', 7.90), B('מארז אורגני', 12.90)], { group: 'ירקות ופירות' }),
+    'zucchini':       P('קישואים', 'fresh', 'g', 1000, '1 ק״ג', [B('תפזורת', 6.90), B('מארז מובחר', 9.90)], { group: 'ירקות ופירות' }),
+    'carrots':        P('גזר', 'fresh', 'g', 1000, '1 ק״ג', [B('תפזורת', 4.90), B('מארז מובחר', 7.90)], { group: 'ירקות ופירות' }),
+    'cherry-tomatoes': P('עגבניות שרי', 'fresh', 'g', 500, '500 ג׳', [B('מארז', 8.90), B('שרי תמר מובחר', 12.90)], { group: 'ירקות ופירות' }),
+    'green-beans':    P('שעועית ירוקה', 'fresh', 'g', 500, '500 ג׳', [B('תפזורת', 9.90), B('מארז שטוף', 12.90)], { group: 'ירקות ופירות' }),
+    'spinach':        P('תרד טרי', 'fresh', 'g', 250, '250 ג׳', [B('מותג פרטי רמי לוי', 7.90, true), B('עלה עלה', 9.90)], { group: 'ירקות ופירות' }),
+    'leek':           P('כרישה', 'fresh', 'unit', 3, '3 יח׳', [B('תפזורת', 6.90), B('מארז מובחר', 8.90)], { group: 'ירקות ופירות' }),
+    'pumpkin':        P('דלעת', 'fresh', 'g', 1000, '1 ק״ג', [B('תפזורת', 6.90), B('מארז חתוך', 9.90)], { group: 'ירקות ופירות' }),
+    'lemons':         P('לימונים', 'fresh', 'unit', 4, '4 יח׳', [B('תפזורת', 5.90), B('מארז מובחר', 7.90)], { group: 'ירקות ופירות' }),
+    'herbs':          P('עשבי תיבול טריים (פטרוזיליה / שמיר)', 'fresh', 'unit', 1, 'צרור', [B('תפזורת', 3.90), B('צרור אורגני', 5.90)], { group: 'ירקות ופירות' }),
+    'ginger':         P('ג׳ינג׳ר טרי', 'fresh', 'g', 100, '100 ג׳', [B('תפזורת', 3.90), B('מארז', 5.90)], { group: 'ירקות ופירות' }),
     // Bread
     'bread':          P('לחם מחמצת', 'fresh', 'g', 750, '750 ג׳', [B('מותג פרטי רמי לוי', 14.90, true), B('מאפיית אנג׳ל', 19.90)], { group: 'לחמים' }),
     'tortillas':      P('טורטיות מחיטה מלאה', 'fresh', 'unit', 8, '8 יח׳', [B('מותג פרטי רמי לוי', 9.90, true), B('מאפיית אנג׳ל', 11.90)], { group: 'לחמים' }),
@@ -68,7 +80,11 @@
     'tuna':           P('טונה במים', 'pantry', 'g', 640, '4 × 160 ג׳', [B('מותג פרטי רמי לוי', 17.90, true), B('סטארקיסט', 24.90)]),
     'egg-noodles':    P('אטריות ביצים', 'pantry', 'g', 400, '400 ג׳', [B('מותג פרטי רמי לוי', 5.90, true), B('אסם', 8.90)]),
     'rice-noodles':   P('אטריות אורז', 'pantry', 'g', 400, '400 ג׳', [B('מותג פרטי רמי לוי', 7.90, true), B('תאי שף', 11.90)]),
-    'frozen-peas':    P('אפונה קפואה', 'pantry', 'g', 800, '800 ג׳', [B('מותג פרטי רמי לוי', 8.90, true), B('סנפרוסט', 12.90)])
+    'frozen-peas':    P('אפונה קפואה', 'pantry', 'g', 800, '800 ג׳', [B('מותג פרטי רמי לוי', 8.90, true), B('סנפרוסט', 12.90)]),
+    'red-lentils':    P('עדשים כתומות', 'pantry', 'g', 1000, '1 ק״ג', [B('מותג פרטי רמי לוי', 9.90, true), B('סוגת', 13.90)]),
+    'chickpeas':      P('גרגירי חומוס בשימורים', 'pantry', 'g', 1200, '3 × 400 ג׳', [B('מותג פרטי רמי לוי', 11.90, true), B('פרי ניר', 15.90)]),
+    'olives':         P('זיתים ירוקים מגולענים', 'pantry', 'g', 560, '560 ג׳', [B('מותג פרטי רמי לוי', 7.90, true), B('יכין', 11.90)]),
+    'sesame-oil':     P('שמן שומשום', 'pantry', 'ml', 250, '250 מ״ל', [B('מותג פרטי רמי לוי', 12.90, true), B('קיקומן', 18.90)])
   };
 
   // ---------- Dishes ----------
@@ -149,7 +165,30 @@
     'lentil-noodles': D({ type: 'backup', name: 'מוקפץ עדשים, אטריות אורז ואפונה', desc: 'עדשים מבושלות, אטריות אורז ואפונה קפואה ברוטב סויה — הכל מהמזווה.', kcal: 505, protein: 35, carbs: 80, fat: 6, prep: 15, tiers: ['saver', 'balanced', 'free'], diet: 'vegan', gluten: true, tags: ['עדשים', 'סויה'], icon: 'eco',
       ing: [['lentils', 100], ['rice-noodles', 70], ['frozen-peas', 100], ['soy-sauce', 15]] }),
     'tuna-rice': D({ type: 'backup', name: 'אורז, טונה ושעועית שחורה', desc: 'אורז בסמטי עם טונה, שעועית שחורה ועגבניות מרוסקות — ללא גלוטן.', kcal: 515, protein: 40, carbs: 70, fat: 6, prep: 15, tiers: ['saver', 'balanced', 'free'], diet: 'fish', tags: ['טונה', 'דגים', 'שעועית', 'אורז'], icon: 'rice_bowl',
-      ing: [['rice-basmati', 70], ['tuna', 160], ['black-beans', 100], ['crushed-tomatoes', 100]] })
+      ing: [['rice-basmati', 70], ['tuna', 160], ['black-beans', 100], ['crushed-tomatoes', 100]] }),
+
+    // --- Low-calorie library (low-calorie-recipes.html) — full-meal versions sized to each slot's target ---
+    // `library: true` + `side`: what was added to the light recipe so it meets the slot's ±5% kcal / ±10% protein window.
+    'lemon-chicken-tray': D({ type: 'anchor', library: true, side: 'מנת עוף גדולה ו-60 ג׳ אורז בסמטי', name: 'עוף בלימון ושום, ירקות צלויים ואורז בסמטי', desc: 'חזה עוף במרינדת לימון, שום ופפריקה, צלוי בתבנית אחת עם קישואים, גזר ובצל, לצד אורז בסמטי.', kcal: 615, protein: 54, carbs: 67, fat: 13, prep: 40, tiers: ['saver', 'balanced', 'free'], diet: 'meat', tags: ['עוף', 'קישוא', 'גזר', 'לימון', 'אורז'], icon: 'set_meal',
+      ing: [['chicken-breast', 200], ['zucchini', 200], ['carrots', 100], ['onion', 50], ['lemons', 0.5], ['rice-basmati', 60], ['olive-oil', 10], ['spices', 0]] }),
+    'herb-salmon': D({ type: 'anchor', library: true, side: 'נתח סלמון גדול ותפוחי אדמה אפויים', name: 'סלמון בעשבי תיבול, שעועית ירוקה ותפוחי אדמה', desc: 'פילה סלמון עם קרום שמיר, פטרוזיליה וגרידת לימון, שעועית ירוקה ותפוחי אדמה אפויים.', kcal: 615, protein: 49, carbs: 40, fat: 27, prep: 30, tiers: ['free'], diet: 'fish', tags: ['דגים', 'סלמון', 'שעועית', 'תפוחי אדמה'], icon: 'phishing',
+      ing: [['salmon', 210], ['green-beans', 200], ['potatoes', 150], ['herbs', 0.25], ['lemons', 0.5], ['spices', 0]] }),
+    'turkey-meatballs': D({ type: 'anchor', library: true, side: '70 ג׳ אורז מלא', name: 'קציצות הודו ברוטב עגבניות וקישואים, אורז מלא', desc: 'קציצות הודו טחון עם קישוא מגורר ופטרוזיליה, מבושלות ברוטב עגבניות, לצד אורז מלא.', kcal: 690, protein: 46, carbs: 66, fat: 25, prep: 40, tiers: ['saver', 'balanced'], diet: 'meat', tags: ['הודו', 'קישוא', 'עגבניות', 'אורז'], icon: 'soup_kitchen',
+      ing: [['ground-turkey', 190], ['crushed-tomatoes', 150], ['zucchini', 100], ['onion', 40], ['herbs', 0.25], ['rice-brown', 70], ['olive-oil', 10], ['spices', 0]] }),
+    'stuffed-peppers': D({ type: 'anchor', library: true, side: 'מנה מוגדלת של מילוי בקר', name: 'פלפלים ממולאים בבקר ובורגול', desc: 'פלפלים אדומים במילוי בקר טחון, בורגול ועשבי תיבול, אפויים ברוטב עגבניות קליל.', kcal: 685, protein: 49, carbs: 62, fat: 26, prep: 50, tiers: ['balanced', 'free'], diet: 'meat', gluten: true, tags: ['בקר', 'בורגול', 'פלפל'], icon: 'restaurant',
+      ing: [['ground-beef', 200], ['bulgur', 50], ['peppers', 250], ['onion', 40], ['herbs', 0.25], ['crushed-tomatoes', 100], ['olive-oil', 5], ['spices', 0]] }),
+    'lentil-pumpkin-soup': D({ type: 'anchor', library: true, side: '150 ג׳ טופו צרוב', name: 'מרק עדשים כתומות ודלעת עם טופו צרוב', desc: 'מרק סמיך של עדשים כתומות, דלעת, גזר וג׳ינג׳ר, עם קוביות טופו צרובות. מצוין להכנה מראש.', kcal: 680, protein: 46, carbs: 79, fat: 20, prep: 35, tiers: ['saver', 'balanced', 'free'], diet: 'vegan', tags: ['עדשים', 'דלעת', 'טופו', 'ג׳ינג׳ר'], icon: 'ramen_dining',
+      ing: [['red-lentils', 85], ['tofu', 150], ['pumpkin', 200], ['carrots', 100], ['onion', 50], ['ginger', 5], ['olive-oil', 5], ['spices', 0]] }),
+    'green-shakshuka': D({ type: 'quick', library: true, side: 'פרוסת מחמצת', name: 'שקשוקה ירוקה עם תרד, קוטג׳ ופרוסת מחמצת', desc: 'ביצים על מצע תרד, כרישה וקישוא, עם קוטג׳ 5% ופרוסת מחמצת לצד.', kcal: 450, protein: 31, carbs: 36, fat: 20, prep: 15, tiers: ['saver', 'balanced', 'free'], diet: 'veg', dairy: true, gluten: true, tags: ['ביצים', 'תרד', 'כרישה', 'גבינה', 'קוטג׳'], icon: 'egg',
+      ing: [['eggs', 2], ['spinach', 100], ['leek', 0.5], ['zucchini', 100], ['cottage', 80], ['bread', 50], ['olive-oil', 5], ['spices', 0]] }),
+    'baked-tilapia': D({ type: 'quick', library: true, side: 'פרוסת מחמצת', name: 'פילה אמנון בתנור עם עגבניות שרי, זיתים ומחמצת', desc: 'פילה אמנון על מצע עגבניות שרי, בצל וזיתים עם אורגנו ולימון, ופרוסת מחמצת לנגב את הרוטב.', kcal: 450, protein: 34, carbs: 39, fat: 17, prep: 20, tiers: ['saver', 'balanced', 'free'], diet: 'fish', gluten: true, tags: ['דגים', 'אמנון', 'זיתים', 'עגבניות'], icon: 'set_meal',
+      ing: [['tilapia', 140], ['cherry-tomatoes', 150], ['onion', 30], ['lemons', 0.25], ['olives', 30], ['bread', 60], ['olive-oil', 10], ['spices', 0]] }),
+    'tuna-chickpea-salad': D({ type: 'quick', library: true, side: 'מנה מוגדלת של טונה וחומוס', name: 'סלט טונה ים-תיכוני עם גרגירי חומוס', desc: 'מלפפון, עגבניות ועשבי תיבול עם טונה במים וגרגירי חומוס ברוטב לימון ושמן זית. בלי בישול.', kcal: 480, protein: 45, carbs: 41, fat: 15, prep: 10, tiers: ['saver', 'balanced', 'free'], diet: 'fish', tags: ['טונה', 'דגים', 'חומוס'], icon: 'lunch_dining',
+      ing: [['tuna', 130], ['chickpeas', 150], ['cucumbers', 150], ['tomatoes', 150], ['herbs', 0.25], ['lemons', 0.5], ['olive-oil', 10], ['spices', 0]] }),
+    'tofu-broccoli-stirfry': D({ type: 'quick', library: true, side: 'מנת טופו מוגדלת', name: 'מוקפץ טופו וברוקולי עם אורז מלא', desc: 'קוביות טופו צרובות עם ברוקולי ופלפל אדום ברוטב סויה וג׳ינג׳ר, מעל אורז מלא (מבושל מראש).', kcal: 495, protein: 42, carbs: 40, fat: 19, prep: 20, tiers: ['saver', 'balanced', 'free'], diet: 'vegan', gluten: true, tags: ['טופו', 'ברוקולי', 'סויה', 'אורז'], icon: 'rice_bowl',
+      ing: [['tofu', 200], ['broccoli', 150], ['peppers', 75], ['ginger', 5], ['rice-brown', 30], ['soy-sauce', 15], ['sesame-oil', 3], ['spices', 0]] }),
+    'quinoa-egg-bowl': D({ type: 'breakfast', library: true, side: 'שתי ביצים וקוטג׳ במקום אבוקדו וטחינה', name: 'קערת קינואה, ביצים וקוטג׳', desc: 'קינואה עם 2 ביצים רכות, קוטג׳ 5%, עגבנייה, מלפפון ועלי בייבי. בוקר עשיר בחלבון וללא גלוטן.', kcal: 385, protein: 29, carbs: 33, fat: 15, prep: 15, tiers: ['saver', 'balanced', 'free'], diet: 'veg', dairy: true, tags: ['ביצים', 'קינואה', 'גבינה'], icon: 'egg_alt',
+      ing: [['eggs', 2], ['quinoa', 35], ['cottage', 80], ['tomatoes', 100], ['cucumbers', 100], ['leafy', 30], ['spices', 0]] })
   };
 
   // ---------- Weekly slots ----------
