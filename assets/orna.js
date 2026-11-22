@@ -31,7 +31,7 @@
   const OFF_TOPIC_RE = [
     // Politics, news, military, law
     /פוליטיק|ממשלה|בחירות|כנסת|ראש\s*הממשלה|נשיא|מפלגה|בג["״]?ץ|בית\s*משפט/,
-    /נתניהו|ביבי|לפיד|גנץ|סמוטריץ|בן\s*גביר|טראמפ|ביידן|פוטין/,
+    /נתניהו|(?:^|\s)ביבי(?:\s|$|[.,!?])|לפיד|גנץ|סמוטריץ|בן\s*גביר|טראמפ|ביידן|פוטין/,
     /חדשות|מלחמה|מבצע\s*צבאי|צה["״]?ל|טילים|חמאס|חיזבאללה|איראן/,
     /עורך\s*דין|תביעה|חוזה\s*שכירות|פסק\s*דין|חוק\s*העונשין/,
     // Programming, tech, AI
@@ -59,6 +59,15 @@
     /מי\s*ניצח|תוצאת\s*המשחק|טבלת\s*הליגה|שערים\s*במשחק/
   ];
 
+  // Idle small-talk / personal chit-chat attempts (warmly redirected back to nutrition)
+  const SMALL_TALK_RE = [
+    /איך\s*(עבר|היה)\s*(עלייך\s*)?(היום|הסופ["״]?ש|השבוע|סוף\s*השבוע)/,
+    /מה\s*(עשית|את\s*עושה)\s*(היום|אתמול|בסופ["״]?ש|עכשיו|בזמנך\s*הפנוי)/,
+    /בת\s*כמה\s*את|מאיפה\s*את|איפה\s*את\s*גרה|האם\s*את\s*נשואה|יש\s*לך\s*(חבר|בעל|ילדים|בן\s*זוג|משפחה|כלב|חתול)/,
+    /משעמם\s*לי|בא\s*לי\s*סתם\s*לדבר|סתם\s*לדבר|שיחת\s*חולין|נדבר\s*על\s*החיים|ספר[י]?\s*לי\s*על\s*החיים/,
+    /מה\s*התחביבים\s*שלך|מה\s*את\s*אוהבת\s*לעשות|איזה\s*מוזיקה\s*את\s*אוהבת/
+  ];
+
   // Keywords that belong to nutrition, fitness/activity, body profile, or ShelfSense
   const DOMAIN_RE = [
     /תזונ|תפריט|ארוח(ה|ות)|אוכל|מאכל|מנה|מנות|מתכון|מתכונים|בישול|לבשל|מבשל|לאכול|אכילה/,
@@ -72,7 +81,13 @@
     /אורנה|שלפסנס|shelfsense|קוראים\s*לי|קוראים\s*לך|שמי\s+|השם\s*שלי/i
   ];
 
-  const GREETING_META_RE = /^(היי+|הי+|שלום|אהלן|בוקר\s*טוב|ערב\s*טוב|צהריים\s*טובים|מה\s*נשמע|מה\s*קורה|תודה(\s*רבה)?|מעולה|מצוין|אחלה|סבבה|יופי|בסדר|כן|לא|הבנתי|אוקיי?|ok|עזרה|מה\s*את\s*יודעת\s*לעשות|מי\s*את|איך\s*קוראים\s*לך|התחל(\s*מחדש)?|איפוס|בוא[י]?\s*נתחיל|נתחיל|להמשיך|המשך|דלג|להשאיר|הכל|אין|כלום)[\s!?.׳'"״]*$/i;
+  const PURE_GREETING_RE = /^(?:היי+|הי+|שלום(?:\s*(?:רב|וברכה|לך|לכם))?|אהלן|הלו|בוקר\s*טוב|צהריים\s*טובים|ערב\s*טוב|שבוע\s*טוב|שבת\s*שלום|מה\s*נשמע|מה\s*קורה|מה\s*שלומך)(?:\s+אורנה)?(?:\s*[,!?.]?\s*(?:מה\s*נשמע|מה\s*קורה|מה\s*שלומך|אורנה))?[\s!?.׳'"״😊🙂👋]*$/i;
+
+  const PURE_THANKS_RE = /^(?:(?:המון|ממש|רב)\s+)?(?:תודה(?:\s*[,!.]?\s*(?:רבה|ענקית|גדולה|לך|לכם|אורנה|על\s*העזרה|על\s*הכל|מראש)){0,3}|תודות|אין\s*עלייך|אלופה|תותחית|כל\s*הכבוד|עזרת\s*לי(?:\s*מאוד)?|ממש\s*עזרת|מעריכ[ה]?(?:\s*מאוד)?|מעולה|מצוין|אחלה|סבבה|יופי|נהדר|מושלם)(?:\s*[,!.]?\s*(?:אורנה|תודה(?:\s*רבה)?)){0,2}[\s!?.׳'"״💚❤️🙏😊👍]*$/i;
+
+  const PURE_BYE_RE = /^(?:(?:תודה(?:\s*רבה)?\s*[,!.]?\s*)?(?:ביי+|להתראות|נדבר|יום\s*טוב|יום\s*נעים|שיהיה\s*יום\s*(?:טוב|נעים)|לילה\s*טוב|סיימתי(?:\s*תודה)?))(?:\s+(?:אורנה|תודה(?:\s*רבה)?))?[\s!?.׳'"״👋💚😊]*$/i;
+
+  const GREETING_META_RE = /^(כן|לא|הבנתי|אוקיי?|ok|עזרה|מה\s*את\s*יודעת\s*לעשות|מי\s*את|איך\s*קוראים\s*לך|התחל(\s*מחדש)?|איפוס|בוא[י]?\s*נתחיל|נתחיל|להמשיך|המשך|דלג|להשאיר|הכל|אין|כלום)[\s!?.׳'"״]*$/i;
 
   const QUESTION_WORD_RE = /^(מה|מי|איך|למה|מדוע|מתי|איפה|היכן|האם|כמה|איזה|איזו|תסביר|תסבירי|תכתוב|תכתבי|תספר|תספרי|תפתור|תפתרי)(?:\s|$|[?!.,])/;
 
@@ -118,8 +133,11 @@
     if (OFF_TOPIC_RE.some((re) => re.test(clean))) {
       return { allowed: false, reason: 'off_topic' };
     }
+    if (SMALL_TALK_RE.some((re) => re.test(clean))) {
+      return { allowed: false, reason: 'small_talk' };
+    }
 
-    if (GREETING_META_RE.test(clean) || hasDomainSignal(clean)) {
+    if (PURE_GREETING_RE.test(clean) || PURE_THANKS_RE.test(clean) || PURE_BYE_RE.test(clean) || GREETING_META_RE.test(clean) || hasDomainSignal(clean)) {
       return { allowed: true, reason: 'domain' };
     }
 
@@ -185,7 +203,7 @@
     if (iAm && !NON_NAMES.has(iAm[1]) && !hasDomainSignal(iAm[1])) {
       return iAm[1].trim();
     }
-    if (allowBareName && isLikelyNameInput(text) && !GREETING_META_RE.test(text) && !hasDomainSignal(text)) {
+    if (allowBareName && isLikelyNameInput(text) && !PURE_GREETING_RE.test(text) && !PURE_THANKS_RE.test(text) && !PURE_BYE_RE.test(text) && !GREETING_META_RE.test(text) && !hasDomainSignal(text)) {
       const words = text.replace(/[.,!?"׳'״]/g, '').trim().split(/\s+/);
       if (!words.some((w) => NON_NAMES.has(w))) return words.join(' ');
     }
@@ -415,19 +433,114 @@
     return p.name ? `${p.name}, ` : '';
   }
 
+  function pickVariant(session, list) {
+    const idx = ((session && session.messages ? session.messages.length : 0)) % list.length;
+    return list[idx];
+  }
+
+  function stepReminderText(step, p) {
+    if (step === 'ask_name') return 'איך קוראים לך, כדי שאוכל להתאים לך את התפריט?';
+    if (step === 'ask_activity') return 'כדי שנמשיך — ספר/י לי בקצרה על רמת הפעילות והאימונים שלך בשבוע.';
+    if (step === 'ask_goal') return 'כדי שנמשיך — מה המטרה העיקרית שלך כרגע (חיטוב, שמירה או מסה)?';
+    if (step === 'ask_metrics') return 'כדי שנדייק את הקלוריות — מה הגיל, הגובה והמשקל שלך? (או שאפשר להשאיר את הנתונים הקיימים).';
+    if (step === 'ask_budget') return 'באיזה תקציב שבועי לסופר נבנה את התפריט (חסכוני ₪280, מאוזן ₪380 או חופשי ₪520)?';
+    if (step === 'ask_restrictions') return 'שלב אחרון — יש לך הגבלות תזונה (כשר/צמחוני/טבעוני/ללא גלוטן) או רכיבים שלא אוהבים?';
+    return p.name
+      ? 'במה נתמקד היום בתפריט שלך? אפשר לעדכן פעילות, להחליף מנה או לבנות תפריט מחדש.'
+      : 'במה נוכל להתקדם היום בתפריט שלך?';
+  }
+
+  function stepReminderChips(step) {
+    if (step === 'ask_activity') return ['יושבני (0–1 אימונים)', 'פעילות מתונה (2–4 אימונים)', 'פעילות גבוהה (5+ אימונים)'];
+    if (step === 'ask_goal') return ['חיטוב וירידה במשקל', 'שמירה על המשקל', 'עלייה במסה'];
+    if (step === 'ask_metrics') return ['להשאיר את הנתונים הקיימים'];
+    if (step === 'ask_budget') return ['חסכוני (₪280)', 'מאוזן (₪380)', 'חופשי (₪520)'];
+    if (step === 'ask_restrictions') return ['כשר בלבד — תבני תפריט', 'צמחוני — תבני תפריט', 'ללא הגבלות — תבני תפריט'];
+    if (step === 'ask_name') return ['בוא נבנה תפריט אישי', 'הצג את התפריט שלי'];
+    return ['בוא נבנה תפריט אישי', 'החלף מנה בתפריט', 'הצג את התפריט שלי', 'עדכן רמת פעילות'];
+  }
+
+  function buildGreetingReply(text, session) {
+    const p = SS.loadProfile();
+    const who = p.name ? ` ${p.name}` : '';
+    let opener;
+    if (/בוקר\s*טוב/.test(text)) opener = `בוקר טוב${who}! ☀️`;
+    else if (/צהריים\s*טובים/.test(text)) opener = `צהריים טובים${who}! 😊`;
+    else if (/ערב\s*טוב/.test(text)) opener = `ערב טוב${who}! 🌙`;
+    else if (/שבוע\s*טוב/.test(text)) opener = `שבוע טוב${who}! 🌱`;
+    else if (/שבת\s*שלום/.test(text)) opener = `שבת שלום${who}! 😊`;
+    else if (/מה\s*(נשמע|קורה|שלומך)/.test(text)) {
+      opener = pickVariant(session, [
+        `היי${who}! אצלי מצוין, תודה ששאלת 😊`,
+        `שלום${who}! הכל מעולה אצלי, תודה 😊`
+      ]);
+    } else if (/שלום/.test(text)) {
+      opener = pickVariant(session, [
+        `שלום${who}! איזה כיף שכתבת 😊`,
+        `שלום וברכה${who}! 😊`
+      ]);
+    } else {
+      opener = pickVariant(session, [
+        `היי${who}! שמחה שאתה כאן 😊`,
+        `אהלן${who}! 🥗`
+      ]);
+    }
+    const nextStep = session.step && session.step !== 'idle' ? session.step : (p.name ? 'ready' : 'ask_name');
+    if (!p.name && nextStep === 'ask_name') session.step = 'ask_name';
+    return {
+      role: 'orna',
+      text: `${opener}\n${stepReminderText(nextStep, p)}`,
+      chips: stepReminderChips(nextStep)
+    };
+  }
+
+  function buildThanksReply(text, session) {
+    const p = SS.loadProfile();
+    const who = p.name ? ` ${p.name}` : '';
+    const warmAck = /אלופה|תותחית|אין\s*עלייך|כל\s*הכבוד/.test(text)
+      ? `איזה כיף לשמוע${who}, תודה! 🥰`
+      : pickVariant(session, [
+          `בכיף גדול${who}! 😊 שמחה שיכולתי לעזור.`,
+          `בשמחה רבה${who}! 💚 תמיד כאן בשביל התפריט שלך.`,
+          `על לא דבר${who}! 🥗 שמחה שזה מדויק לך.`
+        ]);
+    const inIntake = ['ask_name', 'ask_activity', 'ask_goal', 'ask_metrics', 'ask_budget', 'ask_restrictions'].includes(session.step);
+    const tail = inIntake
+      ? `כשתרצה שנמשיך: ${stepReminderText(session.step, p)}`
+      : 'אם תרצה להחליף מנה, לשנות רמת פעילות או לדייק את התקציב — אני כאן.';
+    return {
+      role: 'orna',
+      text: `${warmAck}\n${tail}`,
+      chips: inIntake ? stepReminderChips(session.step) : ['הצג את התפריט שלי', 'החלף מנה בתפריט']
+    };
+  }
+
+  function buildByeReply(text) {
+    const p = SS.loadProfile();
+    const who = p.name ? ` ${p.name}` : '';
+    const bye = /לילה\s*טוב/.test(text)
+      ? `לילה טוב${who}! 🌙 מנוחה טובה חשובה לא פחות מהתזונה. אני כאן כשתרצה להתאים את התפריט.`
+      : `להתראות${who}! שיהיה המשך יום מעולה ובתיאבון 🥗 אם תצטרך משהו בתפריט — רק תכתוב לי.`;
+    return {
+      role: 'orna',
+      text: bye,
+      chips: ['הצג את התפריט שלי', 'בוא נבנה תפריט אישי']
+    };
+  }
+
   function makeWelcomeMessage() {
     const p = SS.loadProfile();
     const knownName = p.name && p.name.trim();
     if (knownName) {
       return {
         role: 'orna',
-        text: `היי ${knownName}! אני אורנה, התזונאית האישית שלך ב-ShelfSense 🥗\nכרגע הפרופיל שלך מוגדר על ${SS.GOALS[p.goal].label} (${SS.num(p.calories)} קק״ל, ${p.protein}ג׳ חלבון) ברמת פעילות ${SS.ACTIVITY[p.activity].label}.\nאיך תרצה להתקדם היום? אפשר לעדכן את רמת הפעילות, לבנות תפריט מחדש או להחליף מנה.`,
+        text: `היי ${knownName}! טוב לראות אותך 😊 אני אורנה, התזונאית האישית שלך ב-ShelfSense 🥗\nכרגע הפרופיל שלך עומד על ${SS.GOALS[p.goal].label} (${SS.num(p.calories)} קק״ל, ${p.protein}ג׳ חלבון) ברמת פעילות ${SS.ACTIVITY[p.activity].label}.\nבמה תרצה שנתמקד היום? אפשר לעדכן פעילות, לבנות תפריט חדש או להחליף מנה.`,
         chips: ['בוא נבנה תפריט מחדש', 'החלף מנה בתפריט', 'עדכן רמת פעילות', 'הסבר על התפריט שלי']
       };
     }
     return {
       role: 'orna',
-      text: 'היי! אני אורנה, התזונאית האישית שלך ב-ShelfSense 🥗\nאני כאן כדי להכיר אותך, להבין את רמת הפעילות היומית והאימונים שלך, ולבנות לך תפריט שבועי מדויק לפי שיטת הלגו והתקציב שלך.\n\nנתחיל? איך קוראים לך?',
+      text: 'שלום! נעים מאוד, אני אורנה — התזונאית האישית שלך ב-ShelfSense 🥗\nאני כאן כדי להכיר אותך, להבין את רמת הפעילות והאימונים שלך, ולבנות לך תפריט שבועי שבאמת מתאים לשגרה ולתקציב שלך.\n\nאיך קוראים לך?',
       chips: ['בוא נבנה תפריט אישי', 'יש לי שאלה על התפריט שלי', 'מה זה שיטת הלגו?']
     };
   }
@@ -568,20 +681,40 @@
           role: 'orna',
           blocked: true,
           badge: 'מחוץ לגבולות ייעוץ תפריט',
-          text: 'חשוב לי להבהיר: אני סוכנת תכנון תפריטים של ShelfSense ולא רופאה או דיאטנית קלינית 🩺\nלגבי תרופות, בדיקות דם או מצב רפואי חשוב להתייעץ עם גורם רפואי מוסמך.\n\nאני כן כאן כדי לעזור לך להבין את רמת הפעילות שלך ולבנות תפריט שבועי מאוזן ומותאם לתקציב. במה נמשיך?',
+          text: 'חשוב לי להיות כנה איתך: אני התזונאית של ShelfSense לתכנון תפריטים ולא רופאה או דיאטנית קלינית 🩺\nבשאלות על תרופות, בדיקות דם או מצב רפואי חשוב להתייעץ עם גורם רפואי מוסמך.\n\nאני כן כאן בשמחה כדי להבין את רמת הפעילות שלך ולבנות תפריט שבועי מאוזן ומותאם לתקציב. במה נמשיך?',
           chips: ['בוא נבנה תפריט אישי', 'הצג את התפריט שלי', 'עדכן רמת פעילות']
         };
       }
       const resumeChips = session.step && session.step !== 'idle' && session.step !== 'ready'
         ? ['בוא נמשיך בבניית התפריט', 'הצג את התפריט שלי']
         : ['בוא נבנה תפריט אישי', 'החלף מנה בתפריט', 'עדכן רמת פעילות'];
+      if (verdict.reason === 'small_talk') {
+        return {
+          role: 'orna',
+          blocked: true,
+          badge: 'ממוקדת בתזונה ותפריט',
+          text: 'איזה נחמד ששאלת 😊 אבל אני כאן כתזונאית שלך ולא לשיחות חולין — אז בוא נשאיר את הפוקוס על התזונה והתפריט השבועי שלך.\nבמה נוכל להתקדם היום בתפריט?',
+          chips: resumeChips
+        };
+      }
       return {
         role: 'orna',
         blocked: true,
         badge: 'נושא מחוץ לתחום התזונה',
-        text: 'אני אורנה, התזונאית של ShelfSense 🥗\nאני חסומה לשיחות שלא קשורות לתזונה, פעילות גופנית ותכנון התפריט השבועי שלך.\nבוא נחזור לתפריט שלך — איך אוכל לעזור בתזונה או בהתאמת הארוחות?',
+        text: 'אני אורנה, התזונאית שלך ב-ShelfSense 🥗 אני ממוקדת רק בתזונה, פעילות גופנית ובניית התפריט השבועי שלך, כך שבנושא הזה לא אוכל לעזור.\nאשמח מאוד שנחזור לתפריט — איך אוכל לעזור לך עם הארוחות או הפעילות?',
         chips: resumeChips
       };
+    }
+
+    // Pure social messages (greetings, thanks, farewells) — warm & human, never drifting into small talk
+    if (PURE_BYE_RE.test(text)) {
+      return buildByeReply(text);
+    }
+    if (PURE_THANKS_RE.test(text)) {
+      return buildThanksReply(text, session);
+    }
+    if (PURE_GREETING_RE.test(text)) {
+      return buildGreetingReply(text, session);
     }
 
     // Explicit restart / guided build triggers
@@ -649,7 +782,7 @@
 
     if (entities.name) {
       patch.name = entities.name;
-      acks.push(`נעים מאוד ${entities.name}! שמרתי את השם שלך בפרופיל.`);
+      acks.push(`איזה כיף להכיר, ${entities.name}! 😊 שמרתי את השם שלך בפרופיל.`);
       touched = true;
     }
     if (entities.activity) {
@@ -657,10 +790,10 @@
       const actInfo = SS.ACTIVITY[entities.activity];
       const tips = {
         low: 'לקחתי בחשבון שגרה יושבנית (פקטור 1.2) — נתמקד במנות משביעות ועשירות בחלבון בלי עודף קלוריות.',
-        moderate: 'רמת פעילות מתונה (פקטור 1.55) — נשלב פחמימות מורכבות לתמיכה באימונים וחלבון להתאוששות.',
-        high: 'רמת פעילות גבוהה (פקטור 1.725) — נגדיל את התקציב הקלורי כדי לתמוך בהתאוששות ובביצועים.'
+        moderate: 'יופי של קצב! רמת פעילות מתונה (פקטור 1.55) — נשלב פחמימות מורכבות לתמיכה באימונים וחלבון להתאוששות.',
+        high: 'כל הכבוד על ההתמדה 💪 רמת פעילות גבוהה (פקטור 1.725) — נגדיל את התקציב הקלורי כדי לתמוך בהתאוששות ובביצועים.'
       };
-      acks.push(`רמת פעילות עודכנה ל**${actInfo.label}**. ${tips[entities.activity]}`);
+      acks.push(`רשמתי לי רמת פעילות **${actInfo.label}**. ${tips[entities.activity]}`);
       touched = true;
     }
     if (entities.goal) {
@@ -742,30 +875,13 @@
       };
     }
 
-    // Greeting / general nutrition assistance
-    if (/^(היי+|הי+|שלום|אהלן|בוקר\s*טוב|ערב\s*טוב|צהריים\s*טובים|מה\s*נשמע|מה\s*קורה)/.test(text)) {
-      const p = SS.loadProfile();
-      if (!p.name) {
-        session.step = 'ask_name';
-        return {
-          role: 'orna',
-          text: 'היי! שמחה שאתה כאן 😊 אני אורנה, התזונאית של ShelfSense.\nבוא נכיר קצר כדי שאבנה לך תפריט שמתאים בדיוק לרמת הפעילות ולמטרות שלך — איך קוראים לך?',
-          chips: ['בוא נבנה תפריט אישי', 'הצג את התפריט שלי']
-        };
-      }
-      return {
-        role: 'orna',
-        text: `היי ${p.name}! איך אפשר לעזור לך היום עם התפריט השבועי או רמת הפעילות שלך?`,
-        chips: ['בוא נבנה תפריט מחדש', 'החלף מנה בתפריט', 'הצג את התפריט שלי', 'עדכן רמת פעילות']
-      };
+    // Greeting / general nutrition assistance (fallback for mixed greeting phrases)
+    if (/^(היי+|הי+|שלום|אהלן|בוקר\s*טוב|ערב\s*טוב|צהריים\s*טובים|מה\s*נשמע|מה\s*קורה|מה\s*שלומך)/.test(text)) {
+      return buildGreetingReply(text, session);
     }
 
-    if (/תודה|מעולה|מצוין|אחלה|סבבה|יופי/.test(text)) {
-      return {
-        role: 'orna',
-        text: `בשמחה ${SS.loadProfile().name ? SS.loadProfile().name + ' ' : ''}💚 אני תמיד כאן אם תרצה/י להחליף מנה, לשנות רמת פעילות או לדייק את התקציב.`,
-        chips: ['הצג את התפריט שלי', 'החלף מנה בתפריט']
-      };
+    if (/תודה|מעולה|מצוין|אחלה|סבבה|יופי|אלופה|תותחית/.test(text)) {
+      return buildThanksReply(text, session);
     }
 
     if (/מי\s*את|איך\s*קוראים\s*לך|מה\s*את\s*יודעת|עזרה/.test(text)) {
