@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ShelfSense — כניסה</title>
+<script src="assets/auth.js"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="assets/data.js"></script>
+<script src="assets/state.js"></script>
+<script src="assets/theme.js"></script>
+<style>
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; line-height: 1; vertical-align: middle; }
+  .field { width: 100%; height: 48px; padding: 0 14px; border-radius: 8px; border: 1px solid #CBD5E1; background: #fff; font: 400 16px 'Rubik', sans-serif; color: #0F172A; }
+  .field:focus { outline: 2px solid #0F766E; outline-offset: 1px; border-color: #0F766E; }
+  .field[aria-invalid="true"] { border-color: #DC2626; }
+  .ltr-field { direction: ltr; text-align: right; }
+</style>
+</head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex flex-col">
+
+<main class="flex-grow flex items-center justify-center px-4 py-space-lg">
+  <div class="w-full max-w-md flex flex-col gap-space-md">
+
+    <a href="index.html" class="flex items-center justify-center gap-space-xs font-headline-md text-headline-md font-bold text-primary" aria-label="ShelfSense">
+      <span class="material-symbols-outlined text-[34px]" style="font-variation-settings:'FILL' 1">restaurant_menu</span><span>ShelfSense</span>
+    </a>
+
+    <section class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm p-space-md md:p-space-lg flex flex-col gap-space-md">
+      <div class="text-center">
+        <h1 class="font-headline-lg text-headline-lg text-on-surface" id="auth-title">ברוכים הבאים</h1>
+        <p class="font-body-md text-body-md text-on-surface-variant mt-1" id="auth-sub">התחברו כדי לראות את התפריט והסל שלכם</p>
+      </div>
+
+      <!-- Mode switch -->
+      <div class="grid grid-cols-2 p-1 rounded-lg bg-surface-container" role="tablist" aria-label="כניסה או הרשמה">
+        <button type="button" role="tab" id="tab-login" aria-selected="true" class="py-2 rounded-md font-label-lg text-label-lg">כניסה</button>
+        <button type="button" role="tab" id="tab-signup" aria-selected="false" class="py-2 rounded-md font-label-lg text-label-lg">הרשמה</button>
+      </div>
+
+      <form id="auth-form" class="flex flex-col gap-space-md" novalidate>
+        <div id="name-row" class="flex flex-col gap-1" hidden>
+          <label for="f-name" class="font-label-lg text-label-lg text-on-surface">שם (לא חובה)</label>
+          <input id="f-name" class="field" type="text" autocomplete="name" maxlength="40" placeholder="איך נקרא לך?"/>
+        </div>
+        <div class="flex flex-col gap-1">
+          <label for="f-email" class="font-label-lg text-label-lg text-on-surface">אימייל</label>
+          <input id="f-email" class="field ltr-field" type="email" inputmode="email" autocomplete="email" placeholder="name@example.com" required/>
+        </div>
+        <div class="flex flex-col gap-1">
+          <label for="f-pass" class="font-label-lg text-label-lg text-on-surface">סיסמה</label>
+          <div class="relative">
+            <input id="f-pass" class="field ltr-field" type="password" autocomplete="current-password" placeholder="לפחות 8 תווים" required style="padding-inline-start:46px"/>
+            <button type="button" id="toggle-pass" class="absolute top-1/2 -translate-y-1/2 left-2 w-9 h-9 rounded-lg flex items-center justify-center text-on-surface-variant hover:bg-surface-container" aria-label="הצג סיסמה" aria-pressed="false">
+              <span class="material-symbols-outlined text-[22px]">visibility</span>
+            </button>
+          </div>
+        </div>
+        <div id="confirm-row" class="flex flex-col gap-1" hidden>
+          <label for="f-pass2" class="font-label-lg text-label-lg text-on-surface">אימות סיסמה</label>
+          <input id="f-pass2" class="field ltr-field" type="password" autocomplete="new-password" placeholder="הקלידו שוב את הסיסמה"/>
+        </div>
+
+        <p id="auth-error" class="hidden p-space-sm rounded-lg bg-error-container text-on-error-container font-body-md text-body-md" role="alert" aria-live="assertive"></p>
+
+        <button type="submit" id="auth-submit" class="h-12 rounded-lg bg-primary text-on-primary font-headline-sm text-headline-sm shadow-md hover:bg-surface-tint active:scale-[0.99] transition disabled:opacity-60">כניסה</button>
+      </form>
+    </section>
+
+    <aside class="rounded-xl bg-secondary-fixed/60 border border-secondary/30 p-space-md flex gap-space-sm items-start" aria-label="הודעת הדגמה">
+      <span class="material-symbols-outlined text-secondary text-[22px] shrink-0">info</span>
+      <p class="font-body-sm text-body-sm text-on-surface">
+        <strong>מצב הדגמה.</strong> זהו אב-טיפוס: החשבון נשמר רק בדפדפן הזה ולא נשלח לשום שרת. הסיסמה נשמרת מוצפנת (hash עם salt), אבל זו אינה הגנה אמיתית, ואין להשתמש כאן בסיסמה שבה אתם משתמשים באתרים אחרים.
+      </p>
+    </aside>
+  </div>
+</main>
+
+<script>
+(function () {
+  const A = window.ShelfSenseAuth;
+  const $ = (id) => document.getElementById(id);
+  let mode = 'login';
+
+  const params = new URLSearchParams(location.search);
+  const next = A.safeNext(params.get('next'));
+
+  // Already signed in → go straight in (use ?switch to sign in as someone else)
+  if (A.currentUser() && !params.has('switch')) { redirectIn(); return; }
+
+  function redirectIn() {
+    if (next) { location.replace(next); return; }
+    const done = window.ShelfSense && window.ShelfSense.loadProfile().completed;
+    location.replace(done ? 'dashboard.html' : 'onboarding.html');
+  }
+
+  function setMode(m) {
+    mode = m;
+    const signup = m === 'signup';
+    $('tab-login').setAttribute('aria-selected', String(!signup));
+    $('tab-signup').setAttribute('aria-selected', String(signup));
+    [['tab-login', !signup], ['tab-signup', signup]].forEach(([id, on]) => {
+      $(id).className = 'py-2 rounded-md font-label-lg text-label-lg transition ' + (on ? 'bg-surface-container-lowest text-primary shadow-sm font-semibold' : 'text-on-surface-variant');
+    });
+    $('name-row').hidden = !signup;
+    $('confirm-row').hidden = !signup;
+    $('f-pass').setAttribute('autocomplete', signup ? 'new-password' : 'current-password');
+    $('auth-title').textContent = signup ? 'יצירת חשבון' : 'ברוכים הבאים';
+    $('auth-sub').textContent = signup ? 'דקה אחת ואתם בפנים' : 'התחברו כדי לראות את התפריט והסל שלכם';
+    $('auth-submit').textContent = signup ? 'יצירת חשבון' : 'כניסה';
+    showError('');
+  }
+
+  function showError(msg, fieldId) {
+    const el = $('auth-error');
+    el.textContent = msg;
+    el.classList.toggle('hidden', !msg);
+    ['f-email', 'f-pass', 'f-pass2'].forEach((id) => $(id).removeAttribute('aria-invalid'));
+    if (msg && fieldId) { $(fieldId).setAttribute('aria-invalid', 'true'); $(fieldId).focus(); }
+  }
+
+  $('tab-login').addEventListener('click', () => setMode('login'));
+  $('tab-signup').addEventListener('click', () => setMode('signup'));
+
+  $('toggle-pass').addEventListener('click', () => {
+    const show = $('f-pass').type === 'password';
+    $('f-pass').type = show ? 'text' : 'password';
+    $('toggle-pass').setAttribute('aria-pressed', String(show));
+    $('toggle-pass').setAttribute('aria-label', show ? 'הסתר סיסמה' : 'הצג סיסמה');
+    $('toggle-pass').firstElementChild.textContent = show ? 'visibility_off' : 'visibility';
+  });
+
+  $('auth-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = $('f-email').value, pass = $('f-pass').value;
+    const bad = A.validate(email, pass);
+    if (bad) { showError(bad, bad.includes('מייל') ? 'f-email' : 'f-pass'); return; }
+    if (mode === 'signup' && pass !== $('f-pass2').value) { showError('הסיסמאות לא זהות', 'f-pass2'); return; }
+
+    const btn = $('auth-submit');
+    btn.disabled = true;
+    const label = btn.textContent;
+    btn.textContent = 'רגע...';
+    const res = mode === 'signup' ? await A.signUp($('f-name').value, email, pass) : await A.logIn(email, pass);
+    if (!res.ok) {
+      btn.disabled = false; btn.textContent = label;
+      showError(res.error, mode === 'login' ? 'f-pass' : 'f-email');
+      return;
+    }
+    // New accounts start with onboarding; returning users land where they were going
+    if (mode === 'signup' && !next) location.replace('onboarding.html'); else redirectIn();
+  });
+
+  setMode('login');
+  $('f-email').focus();
+})();
+</script>
+</body>
+</html>

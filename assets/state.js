@@ -7,10 +7,15 @@
  * Every page loads this file and marks elements with data-ss="<field>" to be filled in.
  */
 (function () {
+  // Data is stored per signed-in account (assets/auth.js): "shelfsense_profile:<email>".
+  // Without a session (e.g. login page) the plain key is used.
+  const acct = () => {
+    try { const s = JSON.parse(localStorage.getItem('shelfsense_session')); return s && s.email ? ':' + s.email : ''; } catch (e) { return ''; }
+  };
   const KEYS = {
-    profile: 'shelfsense_profile',
-    menu: 'shelfsense_menu',
-    cart: 'shelfsense_cart'
+    get profile() { return 'shelfsense_profile' + acct(); },
+    get menu() { return 'shelfsense_menu' + acct(); },
+    get cart() { return 'shelfsense_cart' + acct(); }
   };
 
   const TIERS = {
