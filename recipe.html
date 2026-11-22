@@ -14,7 +14,7 @@
 <!-- Tailwind CSS v3 -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script src="assets/data.js"></script><script src="assets/state.js"></script>
 <!-- Injected Tailwind Config -->
-<script src="assets/theme.js"></script>
+<script src="assets/theme.js"></script><script src="assets/orna.js"></script>
 <style>
     body {
       font-family: 'Rubik', sans-serif;
@@ -559,5 +559,6 @@ document.addEventListener('click', (e) => {
   portions = Number(b.dataset.portions);
   renderRecipe();
 });
+window.addEventListener('shelfsense:change', () => { renderRecipe(); RS.apply(); });
 </script></body></html>
 

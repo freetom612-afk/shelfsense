@@ -12,6 +12,7 @@
 <script src="assets/data.js"></script>
 <script src="assets/state.js"></script>
 <script src="assets/theme.js"></script>
+<script src="assets/orna.js"></script>
 <style>
   .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; line-height: 1; vertical-align: middle; }
   .fill-icon { font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24; }
@@ -360,6 +361,7 @@
 
   renderFilters();
   render();
+  window.addEventListener('shelfsense:change', () => { render(); if (window.ShelfSense) window.ShelfSense.apply(); });
 </script>
 </body>
 </html>

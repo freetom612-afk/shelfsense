@@ -10,7 +10,8 @@
   const KEYS = {
     profile: 'shelfsense_profile',
     menu: 'shelfsense_menu',
-    cart: 'shelfsense_cart'
+    cart: 'shelfsense_cart',
+    orna: 'shelfsense_orna'
   };
 
   const TIERS = {
@@ -33,6 +34,7 @@
 
   // Default profile matches the numbers the pages showed before onboarding existed.
   const DEFAULT_PROFILE = {
+    name: '',
     sex: 'male', age: 28, height: 180, weight: 78,
     activity: 'moderate', goal: 'cut',
     calories: 2150, protein: 165, carbs: 190, fat: 62,
@@ -66,12 +68,18 @@
     return { tdee, delta, calories, protein, carbs, fat, proteinPerKg };
   }
 
+  function notify(key) {
+    try { window.dispatchEvent(new CustomEvent('shelfsense:change', { detail: { key } })); } catch (e) {}
+  }
+
   const loadProfile = () => Object.assign({}, DEFAULT_PROFILE, read(KEYS.profile) || {});
-  const saveProfile = (p) => write(KEYS.profile, Object.assign({}, p, { updatedAt: Date.now() }));
+  const saveProfile = (p) => { write(KEYS.profile, Object.assign({}, p, { updatedAt: Date.now() })); notify(KEYS.profile); };
   const loadMenu = () => read(KEYS.menu) || {};
-  const saveMenu = (m) => write(KEYS.menu, m);
+  const saveMenu = (m) => { write(KEYS.menu, m); notify(KEYS.menu); };
   const loadCart = () => Object.assign({}, DEFAULT_CART, read(KEYS.cart) || {});
-  const saveCart = (c) => write(KEYS.cart, Object.assign(loadCart(), c));
+  const saveCart = (c) => { write(KEYS.cart, Object.assign(loadCart(), c)); notify(KEYS.cart); };
+  const loadOrna = () => read(KEYS.orna) || null;
+  const saveOrna = (data) => write(KEYS.orna, data);
 
   const num = (n) => Math.round(n).toLocaleString('he-IL');
   const money = (n, digits) => '₪' + Number(n).toLocaleString('he-IL', {
@@ -95,10 +103,13 @@
     const c = cart ? { total: cart.total, store: cart.store } : { total: 0, store: loadCart().store };
     const tier = TIERS[p.tier] || TIERS.balanced;
     const goal = GOALS[p.goal] || GOALS.cut;
+    const activity = ACTIVITY[p.activity] || ACTIVITY.moderate;
     const usage = tier.budget ? (c.total / tier.budget) * 100 : 0;
     const other = c.store === 'רמי לוי' ? 'שופרסל' : 'רמי לוי';
     const savings = cart ? Math.max(0, cart.chains[other] - cart.chains[c.store]) : 0;
     return {
+      'user-name': (p.name && String(p.name).trim()) ? String(p.name).trim() : 'איתי ברקוביץ׳',
+      activity: activity.label,
       store: c.store,
       'cart-packs': cart ? String(cart.packs) : '',
       'cart-lines': cart ? String(cart.inCart.length) : '',
@@ -138,7 +149,7 @@
 
   window.ShelfSense = {
     KEYS, TIERS, GOALS, ACTIVITY, DEFAULT_PROFILE,
-    calcMacros, loadProfile, saveProfile, loadMenu, saveMenu, loadCart, saveCart, currentMenu, currentCart,
+    calcMacros, loadProfile, saveProfile, loadMenu, saveMenu, loadCart, saveCart, loadOrna, saveOrna, currentMenu, currentCart,
     num, money, fields, apply
   };
 
