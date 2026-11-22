@@ -109,7 +109,7 @@
   function mountUserMenu() {
     const user = api.currentUser();
     // No account button on the login page or inside the full-screen Reel player
-    if (!user || isLogin || page === 'reel.html' || document.getElementById('ss-user-btn')) return;
+    if (!user || isLogin || page === 'reel.html' || page === 'cook.html' || document.getElementById('ss-user-btn')) return;
     const slot = document.getElementById('ss-user-slot') ||
       (document.querySelector('header > div') && Object.assign(document.createElement('span'), { id: 'ss-user-slot' }));
     if (!slot) return;

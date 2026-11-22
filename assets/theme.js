@@ -157,7 +157,7 @@ tailwind.config = {
   ];
   function mountTabbar() {
     const page = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
-    if (page === 'onboarding.html' || page === 'login.html' || document.getElementById('ss-tabbar')) return;
+    if (page === 'onboarding.html' || page === 'login.html' || page === 'cook.html' || document.getElementById('ss-tabbar')) return;
     const nav = document.createElement('nav');
     nav.id = 'ss-tabbar';
     nav.setAttribute('aria-label', 'ניווט ראשי');
